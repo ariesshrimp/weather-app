@@ -7,8 +7,10 @@ const paths = [
 
 
 module.exports = {
+  target: 'node',
   entry: {
-    main: './src/entry.js'
+    // main: './src/entry.js'
+    main: './src/components/forecast-display/index.js'
   },
   output: {
     filename: 'index.js',

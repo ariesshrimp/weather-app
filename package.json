@@ -4,7 +4,9 @@
   "description": "A working, up-to-date example of how to use static-site-generator-webpack-plugin with react-router.",
   "main": "webpack.config.js",
   "dependencies": {
+    "forecast-io": "^1.0.3",
     "google-maps-api": "^2.0.1",
+    "node-fetch": "^1.6.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-google-maps": "^4.11.0",
