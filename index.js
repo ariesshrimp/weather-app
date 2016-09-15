@@ -8,7 +8,6 @@ import { App } from './components/app.js'
 import Routes from './components/routes.js'
 
 if (typeof document !== 'undefined') {
-  console.log('hello client!')
   ReactDOM.render(<Router history={ browserHistory }>{ Routes }</Router>, document.getElementById('content'))
 }
 

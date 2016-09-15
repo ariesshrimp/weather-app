@@ -1,6 +1,12 @@
 import React from 'react'
+import { ControlledMap } from '../map/index.js'
 
-export const HomePage = props => {
-  console.log('Hello, home!')
-  return <section id="home">Hello!</section>
-}
+export const HomePage = React.createClass({
+  render() {
+    // console.log('home')
+    return <section id="home">
+      <h1>Hello!</h1>
+      <ControlledMap />
+    </section>
+  }
+})

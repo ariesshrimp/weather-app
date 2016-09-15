@@ -8,6 +8,7 @@ import React from 'react'
 
 import { createMarkup } from './utilities.js'
 import { Head } from './components/head/index.js'
+import BaseStyles from './styles/base.scss'
 
 export default props => {
   return <html lang="en">
