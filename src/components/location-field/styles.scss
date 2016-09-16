@@ -2,6 +2,8 @@
   width: 70%;
   padding: 1em;
   border-radius: 12px;
+  border:none;
+  box-shadow: none;
 }
 
 .button {
@@ -12,4 +14,12 @@
   letter-spacing: 1.5;
   width: 30%;
   padding: 1em;
+  border-radius: 12px;
+  transition: background .5s;
+  border: none;
+  box-shadow: none;
+
+  &:hover {
+    background: #111;
+  }
 }

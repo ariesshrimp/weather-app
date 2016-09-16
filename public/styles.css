@@ -1,9 +1,9 @@
-.searchField-src-components-location-field--😑☝🏽😮🇦🇺🇰🇬 {
+.searchField-src-components-location-field--✍🏽👿🕊🙎🏼🇺 {
   width: 70%;
   padding: 1em;
   border-radius: 12px; }
 
-.button-src-components-location-field--🙍🏻👕👩🏾💐🇬🇸 {
+.button-src-components-location-field--🏞🌼🇻🇺📌🌚 {
   font-weight: bold;
   font-variant: small-caps;
   background: #2e2e2e;
@@ -11,84 +11,89 @@
   letter-spacing: 1.5;
   width: 30%;
   padding: 1em; }
-.column-src-components-forecast-display--🖊🇸🇻🕕👦🏽🛐 {
+.column-src-components-forecast-display--🔴📂🍮💶🇨🇴 {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center; }
 
-.columnStart-src-components-forecast-display--🙄🇪🇭🔎🖨🍚 {
+.columnStart-src-components-forecast-display--💇😉💎🇸🇾🚂 {
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
   align-items: center; }
 
-.row-src-components-forecast-display--🍬✌🏾🍓🇱🐕 {
+.row-src-components-forecast-display--💉🌈🙍🏾👷🏿🔳 {
   display: flex;
   flex-flow: row;
   justify-content: center;
   align-items: center; }
 
-.line-src-components-forecast-display--🏹💪🇽🇰🇪🇺🇭🇹 {
+.line-src-components-forecast-display--🤐🇪🇷🕕🕦👧🏿 {
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   width: 100%;
   margin: 1em 0; }
 
-.smallCaps-src-components-forecast-display--👩👰🏿👨‍👨‍👦‍👦💖🌖 {
+.smallCaps-src-components-forecast-display--🙏🏻👍🏾🈹✌🏾😝 {
   font-variant: small-caps; }
 
-.details-src-components-forecast-display--👸🏾🛳🍄👆🏽🍞 p:nth-child(2n) {
+.details-src-components-forecast-display--🌺🕢🙋🏾😵🚸 p:nth-child(2n) {
   margin-bottom: 1em; }
 
-.details-src-components-forecast-display--👸🏾🛳🍄👆🏽🍞 {
+.details-src-components-forecast-display--🌺🕢🙋🏾😵🚸 {
   padding-top: 1em; }
-  .details-src-components-forecast-display--👸🏾🛳🍄👆🏽🍞 p {
+  .details-src-components-forecast-display--🌺🕢🙋🏾😵🚸 p {
     margin: 0.2em; }
 
-.heading-src-components-forecast-display--🙋🏽🚜🌲🏕🔛 * {
+.heading-src-components-forecast-display--🈴💁🏿🇧🇱🐪🙅🏾 * {
   margin-bottom: 0; }
 
-.temp-src-components-forecast-display--👂🏽🇳🇷👃🏼😽🏂 {
+.temp-src-components-forecast-display--👨‍👩‍👦‍👦💆🏽👉🏾😨🇯🇲 {
   font-size: 3em;
   margin-top: 0; }
 
-.clear-day-src-components-forecast-display--🔔🏄🏿👂🏾🏒😱 {
+.default-src-components-forecast-display--😗🇫🇷🈶🇦🇪🔋 {
+  background: white;
+  color: white;
+  fill: white; }
+
+.clear-day-src-components-forecast-display--🔍🇦🇩👈🏽🌡🎾 {
   background: #4E99C3;
   color: white;
   fill: white; }
 
-.clear-night-src-components-forecast-display--🎣💁🏼🚠🛁👩🏻, .partly-cloudy-night-src-components-forecast-display--👐🐒👱🏻🔥👧🏼 {
+.clear-night-src-components-forecast-display--🇴🤕🕘🙊👱🏻, .partly-cloudy-night-src-components-forecast-display--🐘👟🚴🏽👶🏼🖱 {
   background: #0F0F17;
   color: white;
   fill: white; }
 
-.cloudy-src-components-forecast-display--🐀😩😻🇳🇵🐺, .fog-src-components-forecast-display--🌑🙅🏼💗✍🏼🇵🇰, .partly-cloudy-day-src-components-forecast-display--🎏✍🏽💈🧀🚶 {
+.cloudy-src-components-forecast-display--🌕👇🏼💺🕵🏽💁🏾, .fog-src-components-forecast-display--🇷🇸📈🇧🇦🛢🌝, .partly-cloudy-day-src-components-forecast-display--🌧🇬🇵👈🏾👨🏼💆 {
   background: #A7A398;
   color: white;
   fill: white; }
 
-.rain-src-components-forecast-display--🇨🇿🏃🏽🖍🚑👎🏼, .sleet-src-components-forecast-display--🎅🏾🇾🇹🇲🇻👞😲, .wind-src-components-forecast-display--👮🏿💇🏼💏🚧🏾 {
+.rain-src-components-forecast-display--📒🇸🇲😧👸🏾🔶, .sleet-src-components-forecast-display--😍💂🏾😙🎅🏾🐕, .wind-src-components-forecast-display--👷🎋🇧🇯🇧🇭🇬🇱 {
   background: #2B2F4C;
   color: white;
   fill: white; }
 
-.snow-src-components-forecast-display--🔧🔭✊🏽👱🏽🕋 {
+.snow-src-components-forecast-display--🚣🏼👨‍❤️‍💋‍👨😱🛍🉐 {
   background: #4F5053;
   color: black;
   fill: black; }
 
-.animated-src-components-forecast-display--🌭😖🎍😏🇬🇧 {
-  transition: all 3s; }
+.animated-src-components-forecast-display--👦🏽🖖🏾👡💽🕵🏿 {
+  transition: all 2s; }
 
-.material-src-components-forecast-display--💃🏼🆚📯🇬🇶🇸🇭 {
+.material-src-components-forecast-display--🏋🇯🇪💙🇿💋 {
   box-shadow: 0px 1px 3px black; }
 
-.city-src-components-forecast-display--🚐👰🏾📸🇹🇲👏🏾 {
+.city-src-components-forecast-display--😹🆒👴🏿🐩🚏 {
   text-align: center;
   word-wrap: normal; }
-.container-src-components-map--🇼🇫🎯👱🌧🇲🇷 {
+.container-src-components-map--👵🏼🏾📵🇸🇨🍎 {
   width: 100%; }
-.column-src-components-home--🖖🏾💤👩‍👩‍👧‍👦😕🔹 {
+.column-src-components-home--👎🏽💍🐭🚴🏾🏕 {
   display: flex;
   flex-flow: column;
   justify-content: center;
