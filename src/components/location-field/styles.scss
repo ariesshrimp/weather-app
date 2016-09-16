@@ -4,6 +4,15 @@
   border-radius: 12px;
   border:none;
   box-shadow: none;
+
+  // Prevents Safari from doing that awful automated zoom thing
+  font-size: 16px;
+
+  transition: background 1s;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .button {
@@ -18,8 +27,13 @@
   transition: background .5s;
   border: none;
   box-shadow: none;
+  font-size: 16px;
 
   &:hover {
     background: #111;
+  }
+
+  &:focus {
+    outline: none;
   }
 }

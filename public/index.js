@@ -31709,16 +31709,22 @@
 	var LocationField = exports.LocationField = _react2.default.createClass({
 	  displayName: 'LocationField',
 	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
 	    var autocomplete = new gmap.places.Autocomplete(this.refs.searchField);
 	    this.listener = autocomplete.addListener('place_changed', function () {
 	      var place = autocomplete.getPlace();
+	
+	      if (typeof place === 'string') {
+	        _this.props.onChange(place.formatted_address);
+	      }
 	    });
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    gmaps.event.removeListener(this.listener);
 	  },
 	  render: function render() {
-	    var _this = this;
+	    var _this2 = this;
 	
 	    return _react2.default.createElement(
 	      'form',
@@ -31728,7 +31734,7 @@
 	        'button',
 	        { type: 'submit', className: _styles2.default.button, onClick: function onClick(event) {
 	            event.preventDefault();
-	            _this.props.onChange(_this.refs.searchField.value);
+	            _this2.props.onChange(_this2.refs.searchField.value);
 	          } },
 	        'search'
 	      )
@@ -31741,7 +31747,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"searchField":"searchField-src-components-location-field--🦀🔦🇨🇴🐢🐛","button":"button-src-components-location-field--🙌🏻👜😵📅🍒"};
+	module.exports = {"searchField":"searchField-src-components-location-field--🛡🎳🏜😵🔀","button":"button-src-components-location-field--🏻🇨🇴🕢🕧👩🏽"};
 
 /***/ },
 /* 288 */,
@@ -32589,7 +32595,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.ForecastDisplay = exports.convertToCardinal = undefined;
+	exports.ForecastDisplay = exports.convertToCardinal = exports.fetchForecast = undefined;
 	
 	var _moment = __webpack_require__(302);
 	
@@ -32613,7 +32619,26 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d';
+	var fetchForecast = exports.fetchForecast = function fetchForecast(_ref) {
+	  var _ref$location = _ref.location;
+	  var location = _ref$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref$location;
+	  var city = _ref.city;
+	
+	  var APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d';
+	  var requestURL = 'https://api.forecast.io/forecast/' + APIKey + '/' + location.lat + ',' + location.lng;
+	
+	  return (0, _fetchJsonp2.default)(requestURL).then(function (response) {
+	    return response.json();
+	  }).then(function (response) {
+	    return response;
+	  }).then(function (results) {
+	    return {
+	      timezone: results.timezone,
+	      hourly: results.hourly.data[0],
+	      minutely: results.minutely
+	    };
+	  });
+	};
 	
 	// See
 	// http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
@@ -32698,26 +32723,14 @@
 	
 	    return emptyDefault;
 	  },
-	  fetchForecast: function fetchForecast(_ref) {
+	  updateForecast: function updateForecast(_ref2) {
 	    var _this = this;
 	
-	    var _ref$location = _ref.location;
-	    var location = _ref$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref$location;
-	    var city = _ref.city;
+	    var _ref2$location = _ref2.location;
+	    var location = _ref2$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref2$location;
+	    var city = _ref2.city;
 	
-	    var requestURL = 'https://api.forecast.io/forecast/' + APIKey + '/' + location.lat + ',' + location.lng;
-	
-	    return (0, _fetchJsonp2.default)(requestURL).then(function (response) {
-	      return response.json();
-	    }).then(function (response) {
-	      return response;
-	    }).then(function (results) {
-	      return {
-	        timezone: results.timezone,
-	        hourly: results.hourly.data[0],
-	        minutely: results.minutely
-	      };
-	    }).then(function (results) {
+	    return fetchForecast({ location: location, city: city }).then(function (results) {
 	      _this.setState(Object.assign({}, results, { city: city }));
 	      return results;
 	    }).catch(function (error) {
@@ -32725,14 +32738,14 @@
 	    });
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.fetchForecast({
+	    this.updateForecast({
 	      location: this.props.location,
 	      city: this.props.city
 	    });
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
 	    console.log('receiving props:', newProps);
-	    this.fetchForecast({
+	    this.updateForecast({
 	      location: newProps.location,
 	      city: newProps.city
 	    });
@@ -37215,7 +37228,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-forecast-display--👵🏽🆙🌎🇸🇷🚎","columnStart":"columnStart-src-components-forecast-display--🕥🇦🇸🙆🏿🎯🗒","row":"row-src-components-forecast-display--🐳🇳🇪🏥👝🙋","line":"line-src-components-forecast-display--🤕🙏🏾🏃🏾🇭🇺🛤","smallCaps":"smallCaps-src-components-forecast-display--🇭🇷🎣🔻👌🏾🇰","details":"details-src-components-forecast-display--🐺👩‍👩‍👧‍👦🎥💈🈶","heading":"heading-src-components-forecast-display--🆖💅🆑🇦🇹🔨","temp":"temp-src-components-forecast-display--🙋🏼🌫🕗😺🇨🇽","default":"default-src-components-forecast-display--🚙🇸🇪🐏🚚🍏","clear-day":"clear-day-src-components-forecast-display--🍚🙌🏽💞🙅🏿🇮🇶","clear-night":"clear-night-src-components-forecast-display--💁🛣👸😂👧🏽","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🛡💹🚟🇨🇭🐄","cloudy":"cloudy-src-components-forecast-display--🐩☝🏼🚶🏼🇶🇦🐨","fog":"fog-src-components-forecast-display--🎟✍🏾🙍🏻🖖🏿🖐🏼","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--🇰🇲🔃🎨👩🏽🇲🇺","rain":"rain-src-components-forecast-display--🇬🇵🇱🇺🔜🕊💆🏻","sleet":"sleet-src-components-forecast-display--📵🇧🇾🇬🇼🕵🏻💂🏻","wind":"wind-src-components-forecast-display--🕘🚣🏾💆🏾📳👨🏻","snow":"snow-src-components-forecast-display--🚵🏼💿🎼🚦🍨","animated":"animated-src-components-forecast-display--💛🚣🍄👉🙏🏻","material":"material-src-components-forecast-display--📌🏊🏿🔤👓😊","city":"city-src-components-forecast-display--🚨🇲🇫🍝🖇🐁"};
+	module.exports = {"column":"column-src-components-forecast-display--🌚🌄🕕💬🌳","columnStart":"columnStart-src-components-forecast-display--🏢🇰🇮😶🙋🏾🗞","row":"row-src-components-forecast-display--🇲🇲🛳🚵🏿👆🏼🛬","line":"line-src-components-forecast-display--🌯🎗🔮🇸🇪🔲","smallCaps":"smallCaps-src-components-forecast-display--🆕🍝🏋🏽🖖👂🏻","details":"details-src-components-forecast-display--👈🕐🍦🇲🇦🕖","heading":"heading-src-components-forecast-display--🇱🇻🔃🏦💇🏿🏵","temp":"temp-src-components-forecast-display--🍳👺🇰🇼🇷🇸📼","default":"default-src-components-forecast-display--👄💟🤘🕯🚛","clear-day":"clear-day-src-components-forecast-display--🌥👵🇱🇦👮🏼🙆🏾","clear-night":"clear-night-src-components-forecast-display--🇹🍲🌼🗨🇧🇪","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🈴💁🏿🇦🇮💂🏻🗣","cloudy":"cloudy-src-components-forecast-display--🇻🇪🇲🇭🇱🇺👭🇦🇴","fog":"fog-src-components-forecast-display--🌭💅🐆👖🔛","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--🦃🇧🇲🏬🎚🇸🇲","rain":"rain-src-components-forecast-display--👢📄😠🕍🇵🇫","sleet":"sleet-src-components-forecast-display--📋👧🏽🚨🏄🏽🔴","wind":"wind-src-components-forecast-display--🐄🌞🚕🙄☝🏻","snow":"snow-src-components-forecast-display--🇲🇴🗝💺🌋👋🏻","animated":"animated-src-components-forecast-display--🎏🇵🇹🇩🍺🙍🏻","material":"material-src-components-forecast-display--😍💽🏪🕦👱🏿","city":"city-src-components-forecast-display--💞🎍🇿🇦📎🕋"};
 
 /***/ },
 /* 306 */,
@@ -41318,7 +41331,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"container-src-components-map--🐮👰🏿👊🏿🇪🇺🌥"};
+	module.exports = {"container":"container-src-components-map--🍄🍽🛌💆🏼🇹🇦"};
 
 /***/ },
 /* 430 */,
@@ -41326,7 +41339,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-home--🔸🛀🏾🇦🇼💐📰"};
+	module.exports = {"column":"column-src-components-home--😛🇭🇷🇪🇹🎾🙆"};
 
 /***/ },
 /* 432 */,

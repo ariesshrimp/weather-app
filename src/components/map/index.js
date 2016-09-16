@@ -19,6 +19,8 @@ export const Map = React.createClass({
   },
 
   handleWindowResize(event) {
+    // doesn't seem to be working as expected...
+    // see https://github.com/tomchentw/react-google-maps/issues/337
     triggerEvent(this.map, 'resize')
   },
 
@@ -29,7 +31,7 @@ export const Map = React.createClass({
 
   render() {
     return <GoogleMapLoader
-      containerElement={ <div style={ {height: `50vh`, width: `100%`, zIndex: '-999'} }/> }
+      containerElement={ <div className={ CSS.mapContainer }/> }
       googleMapElement={
         <GoogleMap
           ref={ this.handleGoogleMapLoad }
@@ -50,15 +52,11 @@ export const ControlledMap = React.createClass({
   getInitialState() {
     const userLocation = JSON.parse(localStorage.getItem('location') )
     const userCity = localStorage.getItem('city')
-    console.log(userLocation)
-    console.log(userCity)
 
     if (userLocation && userCity) {
-      console.log('both')
       return { location: userLocation, city: userCity }
     }
     else if (userLocation) {
-      console.log('just one')
       return { location: userLocation, city: '' }
     }
     else {
@@ -70,7 +68,6 @@ export const ControlledMap = React.createClass({
   },
 
   componentDidMount() {
-    console.log(this.state)
     // Don't make them wait around forever if we've cached it already
     if (!this.state.location) {
       // Ask the user if they want to use their current location

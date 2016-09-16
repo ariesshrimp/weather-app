@@ -8,6 +8,8 @@ import Routes from './components/routes.js'
 
 import BaseStyles from './styles/base.scss'
 
+// Render statement is wrapped here while we wait for GoogleMaps to
+// initialize.
 gmaps().then(map => {
   window.gmap = map
   ReactDOM.render(<Router history={ browserHistory } >{ Routes }</Router>, document.getElementById('content'))
