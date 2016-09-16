@@ -14,9 +14,17 @@
 
 .row {
   display: flex;
-  flex-flow: row;
+  flex-flow: nowrap;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.scrolling {
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .line {
@@ -98,4 +106,14 @@
 .city {
   text-align: center;
   word-wrap: normal;
+}
+
+:global {
+  .rd3-chart-title {
+    text-align: center;
+  }
+
+  .rd3-chart {
+    overflow: visible;
+  }
 }

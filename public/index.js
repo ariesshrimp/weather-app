@@ -62,7 +62,7 @@
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _base = __webpack_require__(433);
+	var _base = __webpack_require__(435);
 	
 	var _base2 = _interopRequireDefault(_base);
 	
@@ -70,6 +70,8 @@
 	
 	var gmaps = __webpack_require__(299)('AIzaSyDAA7ZvT8YQXSKoFNu9NwvlFeuS4M649QY', ['places']);
 	
+	// Render statement is wrapped here while we wait for GoogleMaps to
+	// initialize.
 	gmaps().then(function (map) {
 	  window.gmap = map;
 	  _reactDom2.default.render(_react2.default.createElement(
@@ -27177,7 +27179,7 @@
 	
 	var _index = __webpack_require__(238);
 	
-	var _styles = __webpack_require__(431);
+	var _styles = __webpack_require__(433);
 	
 	var _styles2 = _interopRequireDefault(_styles);
 	
@@ -27217,7 +27219,7 @@
 	
 	var _index2 = __webpack_require__(301);
 	
-	var _styles = __webpack_require__(429);
+	var _styles = __webpack_require__(431);
 	
 	var _styles2 = _interopRequireDefault(_styles);
 	
@@ -27234,6 +27236,8 @@
 	    window.removeEventListener('resize', this.handleWindowResize);
 	  },
 	  handleWindowResize: function handleWindowResize(event) {
+	    // doesn't seem to be working as expected...
+	    // see https://github.com/tomchentw/react-google-maps/issues/337
 	    (0, _utils.triggerEvent)(this.map, 'resize');
 	  },
 	  handleGoogleMapLoad: function handleGoogleMapLoad(map) {
@@ -27242,7 +27246,7 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(_reactGoogleMaps.GoogleMapLoader, {
-	      containerElement: _react2.default.createElement('div', { style: { height: '50vh', width: '100%', zIndex: '-999' } }),
+	      containerElement: _react2.default.createElement('div', { className: _styles2.default.mapContainer }),
 	      googleMapElement: _react2.default.createElement(
 	        _reactGoogleMaps.GoogleMap,
 	        {
@@ -27265,14 +27269,10 @@
 	  getInitialState: function getInitialState() {
 	    var userLocation = JSON.parse(localStorage.getItem('location'));
 	    var userCity = localStorage.getItem('city');
-	    console.log(userLocation);
-	    console.log(userCity);
 	
 	    if (userLocation && userCity) {
-	      console.log('both');
 	      return { location: userLocation, city: userCity };
 	    } else if (userLocation) {
-	      console.log('just one');
 	      return { location: userLocation, city: '' };
 	    } else {
 	      return {
@@ -27284,7 +27284,6 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 	
-	    console.log(this.state);
 	    // Don't make them wait around forever if we've cached it already
 	    if (!this.state.location) {
 	      // Ask the user if they want to use their current location
@@ -31747,7 +31746,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"searchField":"searchField-src-components-location-field--🛡🎳🏜😵🔀","button":"button-src-components-location-field--🏻🇨🇴🕢🕧👩🏽"};
+	module.exports = {"searchField":"searchField-src-components-location-field--📂🤓👶🔞📻","button":"button-src-components-location-field--🏇🏼🇹🇳🌙🇧🇬📅"};
 
 /***/ },
 /* 288 */,
@@ -32617,6 +32616,8 @@
 	
 	var _styles2 = _interopRequireDefault(_styles);
 	
+	var _minuteBadge = __webpack_require__(307);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var fetchForecast = exports.fetchForecast = function fetchForecast(_ref) {
@@ -32629,8 +32630,6 @@
 	
 	  return (0, _fetchJsonp2.default)(requestURL).then(function (response) {
 	    return response.json();
-	  }).then(function (response) {
-	    return response;
 	  }).then(function (results) {
 	    return {
 	      timezone: results.timezone,
@@ -32638,6 +32637,15 @@
 	      minutely: results.minutely
 	    };
 	  });
+	};
+	
+	var mockFetch = function mockFetch() {
+	  var data = __webpack_require__(308);
+	  return {
+	    timezone: data.timezone,
+	    hourly: data.hourly.data[0],
+	    minutely: data.minutely
+	  };
 	};
 	
 	// See
@@ -32717,25 +32725,33 @@
 	        visibility: 0
 	      },
 	      minutely: {
-	        summary: ''
+	        summary: '',
+	        data: []
 	      }
 	    };
 	
 	    return emptyDefault;
 	  },
 	  updateForecast: function updateForecast(_ref2) {
-	    var _this = this;
-	
 	    var _ref2$location = _ref2.location;
 	    var location = _ref2$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref2$location;
 	    var city = _ref2.city;
 	
-	    return fetchForecast({ location: location, city: city }).then(function (results) {
-	      _this.setState(Object.assign({}, results, { city: city }));
-	      return results;
-	    }).catch(function (error) {
-	      return console.error(error);
-	    });
+	    if (mockFetch) {
+	      var _mockFetch = mockFetch();
+	
+	      var hourly = _mockFetch.hourly;
+	      var minutely = _mockFetch.minutely;
+	
+	      var results = { hourly: hourly, minutely: minutely };
+	      this.setState(Object.assign({}, results, { city: city }));
+	    }
+	    // return fetchForecast({location, city})
+	    //   .then(results => {
+	    //     this.setState(Object.assign({}, results, { city }))
+	    //     return results
+	    //   })
+	    //   .catch(error => console.error(error))
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.updateForecast({
@@ -32751,7 +32767,7 @@
 	    });
 	  },
 	  getWeatherIcon: function getWeatherIcon(name) {
-	    var req = __webpack_require__(307);
+	    var req = __webpack_require__(309);
 	    return req('./' + name + '.svg');
 	  },
 	  render: function render() {
@@ -32760,7 +32776,7 @@
 	    var minutely = _state.minutely;
 	
 	    var Icon = this.getWeatherIcon(hourly.icon);
-	
+	    console.log('minute data:', minutely.data[0]);
 	    return _react2.default.createElement(
 	      'section',
 	      { className: [_styles2.default.column, _styles2.default[hourly.icon], _styles2.default.animated, _styles2.default.material].join(' ') },
@@ -32792,6 +32808,13 @@
 	      _react2.default.createElement(
 	        'div',
 	        { className: [_styles2.default.line, _styles2.default.column].join(' ') },
+	        _react2.default.createElement(
+	          'ul',
+	          { className: [_styles2.default.row, _styles2.default.scrolling].join(' ') },
+	          minutely ? minutely.data.map(function (minute, index) {
+	            return _react2.default.createElement(_minuteBadge.MinuteBadge, { key: index, data: minute });
+	          }) : null
+	        ),
 	        _react2.default.createElement(
 	          'p',
 	          null,
@@ -37228,25 +37251,1527 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-forecast-display--🌚🌄🕕💬🌳","columnStart":"columnStart-src-components-forecast-display--🏢🇰🇮😶🙋🏾🗞","row":"row-src-components-forecast-display--🇲🇲🛳🚵🏿👆🏼🛬","line":"line-src-components-forecast-display--🌯🎗🔮🇸🇪🔲","smallCaps":"smallCaps-src-components-forecast-display--🆕🍝🏋🏽🖖👂🏻","details":"details-src-components-forecast-display--👈🕐🍦🇲🇦🕖","heading":"heading-src-components-forecast-display--🇱🇻🔃🏦💇🏿🏵","temp":"temp-src-components-forecast-display--🍳👺🇰🇼🇷🇸📼","default":"default-src-components-forecast-display--👄💟🤘🕯🚛","clear-day":"clear-day-src-components-forecast-display--🌥👵🇱🇦👮🏼🙆🏾","clear-night":"clear-night-src-components-forecast-display--🇹🍲🌼🗨🇧🇪","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🈴💁🏿🇦🇮💂🏻🗣","cloudy":"cloudy-src-components-forecast-display--🇻🇪🇲🇭🇱🇺👭🇦🇴","fog":"fog-src-components-forecast-display--🌭💅🐆👖🔛","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--🦃🇧🇲🏬🎚🇸🇲","rain":"rain-src-components-forecast-display--👢📄😠🕍🇵🇫","sleet":"sleet-src-components-forecast-display--📋👧🏽🚨🏄🏽🔴","wind":"wind-src-components-forecast-display--🐄🌞🚕🙄☝🏻","snow":"snow-src-components-forecast-display--🇲🇴🗝💺🌋👋🏻","animated":"animated-src-components-forecast-display--🎏🇵🇹🇩🍺🙍🏻","material":"material-src-components-forecast-display--😍💽🏪🕦👱🏿","city":"city-src-components-forecast-display--💞🎍🇿🇦📎🕋"};
+	module.exports = {"column":"column-src-components-forecast-display--🏿🙋🏾🚘💇🏿😔","columnStart":"columnStart-src-components-forecast-display--👧🏻🔹🚣🚵🏾👣","row":"row-src-components-forecast-display--🇼🇫💆🏾👊🏾🔢🕕","scrolling":"scrolling-src-components-forecast-display--🇺🇲👇🏾🇲🇲🌄🔉","line":"line-src-components-forecast-display--👸🏿🚪💞🕸🍬","smallCaps":"smallCaps-src-components-forecast-display--🌀📛🇧🇾🗂🗿","details":"details-src-components-forecast-display--🈵🇩🇰📕🕟🏚","heading":"heading-src-components-forecast-display--🌫👆🏽💮🉑🚼","temp":"temp-src-components-forecast-display--🍴🌑👋🍟🔺","default":"default-src-components-forecast-display--🚒🍈💂🏁🐰","clear-day":"clear-day-src-components-forecast-display--💥🕐🇧🇳🍅🏧","clear-night":"clear-night-src-components-forecast-display--🇳🇵🕎😀🙎🏽🔓","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🗣💫🗯🏛🌓","cloudy":"cloudy-src-components-forecast-display--🚧💓🚜🙅🏼🏄🏻","fog":"fog-src-components-forecast-display--🏂🏿🚠🏆🇲🇸🇻🇳","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--😢👡✌🏽🕋🛏","rain":"rain-src-components-forecast-display--🍼🙅🏿🕹🚄🇩","sleet":"sleet-src-components-forecast-display--👴🏻😂🇦🇹💵🚵🏿","wind":"wind-src-components-forecast-display--🔨💹🇹🇿👃🏻💱","snow":"snow-src-components-forecast-display--🇧🇦🙎🏻🏖📓🇦🇼","animated":"animated-src-components-forecast-display--🇲🇹🙅🇧🇯🔡🗝","material":"material-src-components-forecast-display--🏃🏻🗽🇵🇷🚶🏻🎅🏼","city":"city-src-components-forecast-display--🕡📌💂🏻🕵🏾🐕"};
 
 /***/ },
 /* 306 */,
 /* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.MinuteBadge = undefined;
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _moment = __webpack_require__(302);
+	
+	var _moment2 = _interopRequireDefault(_moment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var MinuteBadge = exports.MinuteBadge = function MinuteBadge(props) {
+	  console.log(props);
+	  var time = (0, _moment2.default)().unix(props.data.time).format('h:mma');
+	  console.log(time);
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      props.data && props.data.time
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      props.data && props.data.precipIntensity
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      props.data && props.data.precipProbability
+	    )
+	  );
+	};
+
+/***/ },
+/* 308 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"latitude": 37.8267,
+		"longitude": -122.423,
+		"timezone": "America/Los_Angeles",
+		"offset": -7,
+		"currently": {
+			"time": 1474045465,
+			"summary": "Mostly Cloudy",
+			"icon": "partly-cloudy-day",
+			"nearestStormDistance": 224,
+			"nearestStormBearing": 353,
+			"precipIntensity": 0,
+			"precipProbability": 0,
+			"temperature": 60.13,
+			"apparentTemperature": 60.13,
+			"dewPoint": 53.02,
+			"humidity": 0.77,
+			"windSpeed": 2.79,
+			"windBearing": 244,
+			"visibility": 7.67,
+			"cloudCover": 0.83,
+			"pressure": 1015.44,
+			"ozone": 299.07
+		},
+		"minutely": {
+			"summary": "Mostly cloudy for the hour.",
+			"icon": "partly-cloudy-day",
+			"data": [
+				{
+					"time": 1474045440,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045500,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045560,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045620,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045680,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045740,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045800,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045860,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045920,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474045980,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046040,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046100,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046160,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046220,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046280,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046340,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046400,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046460,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046520,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046580,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046640,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046700,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046760,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046820,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046880,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474046940,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047000,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047060,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047120,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047180,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047240,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047300,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047360,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047420,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047480,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047540,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047600,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047660,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047720,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047780,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047840,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047900,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474047960,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048020,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048080,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048140,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048200,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048260,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048320,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048380,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048440,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048500,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048560,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048620,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048680,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048740,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048800,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048860,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048920,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474048980,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				},
+				{
+					"time": 1474049040,
+					"precipIntensity": 0,
+					"precipProbability": 0
+				}
+			]
+		},
+		"hourly": {
+			"summary": "Mostly cloudy starting tonight.",
+			"icon": "partly-cloudy-night",
+			"data": [
+				{
+					"time": 1474045200,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.96,
+					"apparentTemperature": 59.96,
+					"dewPoint": 53.01,
+					"humidity": 0.78,
+					"windSpeed": 2.74,
+					"windBearing": 243,
+					"visibility": 7.57,
+					"cloudCover": 0.85,
+					"pressure": 1015.43,
+					"ozone": 299.07
+				},
+				{
+					"time": 1474048800,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 62.3,
+					"apparentTemperature": 62.3,
+					"dewPoint": 53.05,
+					"humidity": 0.72,
+					"windSpeed": 3.48,
+					"windBearing": 258,
+					"visibility": 8.87,
+					"cloudCover": 0.66,
+					"pressure": 1015.5,
+					"ozone": 299.1
+				},
+				{
+					"time": 1474052400,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 65.08,
+					"apparentTemperature": 65.08,
+					"dewPoint": 53.32,
+					"humidity": 0.66,
+					"windSpeed": 4.32,
+					"windBearing": 266,
+					"visibility": 9,
+					"cloudCover": 0.52,
+					"pressure": 1015.2,
+					"ozone": 298.93
+				},
+				{
+					"time": 1474056000,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 68.16,
+					"apparentTemperature": 68.16,
+					"dewPoint": 53.63,
+					"humidity": 0.6,
+					"windSpeed": 5.63,
+					"windBearing": 268,
+					"visibility": 9.26,
+					"cloudCover": 0.33,
+					"pressure": 1014.72,
+					"ozone": 298.59
+				},
+				{
+					"time": 1474059600,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 70.51,
+					"apparentTemperature": 70.51,
+					"dewPoint": 54.21,
+					"humidity": 0.56,
+					"windSpeed": 6.91,
+					"windBearing": 270,
+					"visibility": 9.38,
+					"cloudCover": 0.2,
+					"pressure": 1014.28,
+					"ozone": 298.06
+				},
+				{
+					"time": 1474063200,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 71.68,
+					"apparentTemperature": 71.68,
+					"dewPoint": 54.88,
+					"humidity": 0.55,
+					"windSpeed": 8.23,
+					"windBearing": 276,
+					"visibility": 9.33,
+					"cloudCover": 0.13,
+					"pressure": 1013.93,
+					"ozone": 297.26
+				},
+				{
+					"time": 1474066800,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 71.03,
+					"apparentTemperature": 71.03,
+					"dewPoint": 54.72,
+					"humidity": 0.56,
+					"windSpeed": 8.95,
+					"windBearing": 279,
+					"visibility": 9.31,
+					"cloudCover": 0.14,
+					"pressure": 1013.56,
+					"ozone": 296.27
+				},
+				{
+					"time": 1474070400,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 69.2,
+					"apparentTemperature": 69.2,
+					"dewPoint": 54.25,
+					"humidity": 0.59,
+					"windSpeed": 9.32,
+					"windBearing": 281,
+					"visibility": 9.25,
+					"cloudCover": 0.15,
+					"pressure": 1013.37,
+					"ozone": 295.3
+				},
+				{
+					"time": 1474074000,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 66.81,
+					"apparentTemperature": 66.81,
+					"dewPoint": 54.16,
+					"humidity": 0.64,
+					"windSpeed": 9.22,
+					"windBearing": 280,
+					"visibility": 9.12,
+					"cloudCover": 0.15,
+					"pressure": 1013.37,
+					"ozone": 294.38
+				},
+				{
+					"time": 1474077600,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 63.57,
+					"apparentTemperature": 63.57,
+					"dewPoint": 53.65,
+					"humidity": 0.7,
+					"windSpeed": 8.07,
+					"windBearing": 277,
+					"visibility": 8.98,
+					"cloudCover": 0.14,
+					"pressure": 1013.49,
+					"ozone": 293.48
+				},
+				{
+					"time": 1474081200,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 61.03,
+					"apparentTemperature": 61.03,
+					"dewPoint": 53.68,
+					"humidity": 0.77,
+					"windSpeed": 6.9,
+					"windBearing": 274,
+					"visibility": 8.37,
+					"cloudCover": 0.2,
+					"pressure": 1013.67,
+					"ozone": 292.75
+				},
+				{
+					"time": 1474084800,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.6,
+					"apparentTemperature": 59.6,
+					"dewPoint": 53.51,
+					"humidity": 0.8,
+					"windSpeed": 6.54,
+					"windBearing": 272,
+					"visibility": 8.12,
+					"cloudCover": 0.22,
+					"pressure": 1013.94,
+					"ozone": 292.29
+				},
+				{
+					"time": 1474088400,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 58.63,
+					"apparentTemperature": 58.63,
+					"dewPoint": 53.35,
+					"humidity": 0.83,
+					"windSpeed": 5.88,
+					"windBearing": 273,
+					"visibility": 7.88,
+					"cloudCover": 0.33,
+					"pressure": 1014.27,
+					"ozone": 292
+				},
+				{
+					"time": 1474092000,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 57.53,
+					"apparentTemperature": 57.53,
+					"dewPoint": 52.78,
+					"humidity": 0.84,
+					"windSpeed": 5.15,
+					"windBearing": 268,
+					"visibility": 7.61,
+					"cloudCover": 0.43,
+					"pressure": 1014.49,
+					"ozone": 291.7
+				},
+				{
+					"time": 1474095600,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 57.14,
+					"apparentTemperature": 57.14,
+					"dewPoint": 52.77,
+					"humidity": 0.85,
+					"windSpeed": 4.89,
+					"windBearing": 254,
+					"visibility": 7.13,
+					"cloudCover": 0.55,
+					"pressure": 1014.49,
+					"ozone": 291.36
+				},
+				{
+					"time": 1474099200,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 56.61,
+					"apparentTemperature": 56.61,
+					"dewPoint": 52.4,
+					"humidity": 0.86,
+					"windSpeed": 5.76,
+					"windBearing": 262,
+					"visibility": 6.54,
+					"cloudCover": 0.57,
+					"pressure": 1014.37,
+					"ozone": 291.01
+				},
+				{
+					"time": 1474102800,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 56.5,
+					"apparentTemperature": 56.5,
+					"dewPoint": 52.93,
+					"humidity": 0.88,
+					"windSpeed": 6.09,
+					"windBearing": 264,
+					"visibility": 5.48,
+					"cloudCover": 0.63,
+					"pressure": 1014.27,
+					"ozone": 290.55
+				},
+				{
+					"time": 1474106400,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 56.04,
+					"apparentTemperature": 56.04,
+					"dewPoint": 52.97,
+					"humidity": 0.89,
+					"windSpeed": 5.55,
+					"windBearing": 260,
+					"visibility": 4.28,
+					"cloudCover": 0.73,
+					"pressure": 1014.2,
+					"ozone": 289.95
+				},
+				{
+					"time": 1474110000,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 55.65,
+					"apparentTemperature": 55.65,
+					"dewPoint": 53,
+					"humidity": 0.91,
+					"windSpeed": 4.83,
+					"windBearing": 260,
+					"visibility": 3.18,
+					"cloudCover": 0.81,
+					"pressure": 1014.15,
+					"ozone": 289.25
+				},
+				{
+					"time": 1474113600,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 55.35,
+					"apparentTemperature": 55.35,
+					"dewPoint": 52.74,
+					"humidity": 0.91,
+					"windSpeed": 4.1,
+					"windBearing": 262,
+					"visibility": 2.55,
+					"cloudCover": 0.82,
+					"pressure": 1014.19,
+					"ozone": 288.43
+				},
+				{
+					"time": 1474117200,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 55.1,
+					"apparentTemperature": 55.1,
+					"dewPoint": 52.6,
+					"humidity": 0.91,
+					"windSpeed": 3.51,
+					"windBearing": 258,
+					"visibility": 2.54,
+					"cloudCover": 0.89,
+					"pressure": 1014.39,
+					"ozone": 287.4
+				},
+				{
+					"time": 1474120800,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 54.9,
+					"apparentTemperature": 54.9,
+					"dewPoint": 52.54,
+					"humidity": 0.92,
+					"windSpeed": 2.48,
+					"windBearing": 249,
+					"visibility": 2.83,
+					"cloudCover": 0.9,
+					"pressure": 1014.67,
+					"ozone": 286.25
+				},
+				{
+					"time": 1474124400,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 56.61,
+					"apparentTemperature": 56.61,
+					"dewPoint": 53.6,
+					"humidity": 0.9,
+					"windSpeed": 2.13,
+					"windBearing": 245,
+					"visibility": 3.92,
+					"cloudCover": 0.88,
+					"pressure": 1014.96,
+					"ozone": 285.21
+				},
+				{
+					"time": 1474128000,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.59,
+					"apparentTemperature": 59.59,
+					"dewPoint": 54.6,
+					"humidity": 0.84,
+					"windSpeed": 2.06,
+					"windBearing": 246,
+					"visibility": 5.12,
+					"cloudCover": 0.81,
+					"pressure": 1015.24,
+					"ozone": 284.37
+				},
+				{
+					"time": 1474131600,
+					"summary": "Mostly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 60.33,
+					"apparentTemperature": 60.33,
+					"dewPoint": 53.68,
+					"humidity": 0.79,
+					"windSpeed": 2.25,
+					"windBearing": 250,
+					"visibility": 6.41,
+					"cloudCover": 0.61,
+					"pressure": 1015.5,
+					"ozone": 283.65
+				},
+				{
+					"time": 1474135200,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 62.73,
+					"apparentTemperature": 62.73,
+					"dewPoint": 53.69,
+					"humidity": 0.72,
+					"windSpeed": 2.66,
+					"windBearing": 256,
+					"visibility": 7.56,
+					"cloudCover": 0.44,
+					"pressure": 1015.62,
+					"ozone": 282.97
+				},
+				{
+					"time": 1474138800,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 65.68,
+					"apparentTemperature": 65.68,
+					"dewPoint": 54.11,
+					"humidity": 0.66,
+					"windSpeed": 3.64,
+					"windBearing": 262,
+					"visibility": 8.56,
+					"cloudCover": 0.32,
+					"pressure": 1015.49,
+					"ozone": 282.33
+				},
+				{
+					"time": 1474142400,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 69.44,
+					"apparentTemperature": 69.44,
+					"dewPoint": 55.24,
+					"humidity": 0.61,
+					"windSpeed": 5.01,
+					"windBearing": 266,
+					"visibility": 9.41,
+					"cloudCover": 0.24,
+					"pressure": 1015.18,
+					"ozone": 281.74
+				},
+				{
+					"time": 1474146000,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 72.6,
+					"apparentTemperature": 72.6,
+					"dewPoint": 56.36,
+					"humidity": 0.57,
+					"windSpeed": 6.38,
+					"windBearing": 270,
+					"visibility": 10,
+					"cloudCover": 0.19,
+					"pressure": 1014.83,
+					"ozone": 281.17
+				},
+				{
+					"time": 1474149600,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 74.52,
+					"apparentTemperature": 74.52,
+					"dewPoint": 57.06,
+					"humidity": 0.55,
+					"windSpeed": 7.53,
+					"windBearing": 273,
+					"visibility": 10,
+					"cloudCover": 0.15,
+					"pressure": 1014.46,
+					"ozone": 280.65
+				},
+				{
+					"time": 1474153200,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 74.04,
+					"apparentTemperature": 74.04,
+					"dewPoint": 56.66,
+					"humidity": 0.55,
+					"windSpeed": 8.54,
+					"windBearing": 276,
+					"visibility": 10,
+					"cloudCover": 0.17,
+					"pressure": 1014.07,
+					"ozone": 280.17
+				},
+				{
+					"time": 1474156800,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 72.54,
+					"apparentTemperature": 72.54,
+					"dewPoint": 56.18,
+					"humidity": 0.56,
+					"windSpeed": 8.99,
+					"windBearing": 277,
+					"visibility": 10,
+					"cloudCover": 0.18,
+					"pressure": 1013.81,
+					"ozone": 279.65
+				},
+				{
+					"time": 1474160400,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 69.95,
+					"apparentTemperature": 69.95,
+					"dewPoint": 55.86,
+					"humidity": 0.61,
+					"windSpeed": 8.45,
+					"windBearing": 277,
+					"visibility": 10,
+					"cloudCover": 0.19,
+					"pressure": 1013.75,
+					"ozone": 279.01
+				},
+				{
+					"time": 1474164000,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 66.64,
+					"apparentTemperature": 66.64,
+					"dewPoint": 55.46,
+					"humidity": 0.67,
+					"windSpeed": 7.58,
+					"windBearing": 277,
+					"visibility": 10,
+					"cloudCover": 0.19,
+					"pressure": 1013.81,
+					"ozone": 278.34
+				},
+				{
+					"time": 1474167600,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 63.93,
+					"apparentTemperature": 63.93,
+					"dewPoint": 55.12,
+					"humidity": 0.73,
+					"windSpeed": 6.79,
+					"windBearing": 276,
+					"visibility": 10,
+					"cloudCover": 0.19,
+					"pressure": 1013.92,
+					"ozone": 277.82
+				},
+				{
+					"time": 1474171200,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 62.45,
+					"apparentTemperature": 62.45,
+					"dewPoint": 55.27,
+					"humidity": 0.77,
+					"windSpeed": 6.12,
+					"windBearing": 274,
+					"visibility": 10,
+					"cloudCover": 0.15,
+					"pressure": 1014.11,
+					"ozone": 277.5
+				},
+				{
+					"time": 1474174800,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 61.6,
+					"apparentTemperature": 61.6,
+					"dewPoint": 55.69,
+					"humidity": 0.81,
+					"windSpeed": 5.46,
+					"windBearing": 269,
+					"visibility": 10,
+					"cloudCover": 0.11,
+					"pressure": 1014.35,
+					"ozone": 277.33
+				},
+				{
+					"time": 1474178400,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 60.96,
+					"apparentTemperature": 60.96,
+					"dewPoint": 56.01,
+					"humidity": 0.84,
+					"windSpeed": 4.92,
+					"windBearing": 265,
+					"visibility": 10,
+					"cloudCover": 0.1,
+					"pressure": 1014.46,
+					"ozone": 277.3
+				},
+				{
+					"time": 1474182000,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 60.45,
+					"apparentTemperature": 60.45,
+					"dewPoint": 56.11,
+					"humidity": 0.86,
+					"windSpeed": 4.53,
+					"windBearing": 261,
+					"visibility": 9.9,
+					"cloudCover": 0.13,
+					"pressure": 1014.34,
+					"ozone": 277.5
+				},
+				{
+					"time": 1474185600,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 60.07,
+					"apparentTemperature": 60.07,
+					"dewPoint": 56.1,
+					"humidity": 0.87,
+					"windSpeed": 4.14,
+					"windBearing": 257,
+					"visibility": 9.78,
+					"cloudCover": 0.19,
+					"pressure": 1014.1,
+					"ozone": 277.85
+				},
+				{
+					"time": 1474189200,
+					"summary": "Clear",
+					"icon": "clear-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.68,
+					"apparentTemperature": 59.68,
+					"dewPoint": 55.94,
+					"humidity": 0.87,
+					"windSpeed": 3.64,
+					"windBearing": 253,
+					"visibility": 9.71,
+					"cloudCover": 0.24,
+					"pressure": 1013.9,
+					"ozone": 278.13
+				},
+				{
+					"time": 1474192800,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.21,
+					"apparentTemperature": 59.21,
+					"dewPoint": 55.66,
+					"humidity": 0.88,
+					"windSpeed": 3.1,
+					"windBearing": 248,
+					"visibility": 9.78,
+					"cloudCover": 0.26,
+					"pressure": 1013.75,
+					"ozone": 278.29
+				},
+				{
+					"time": 1474196400,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 58.79,
+					"apparentTemperature": 58.79,
+					"dewPoint": 55.28,
+					"humidity": 0.88,
+					"windSpeed": 2.64,
+					"windBearing": 244,
+					"visibility": 9.9,
+					"cloudCover": 0.27,
+					"pressure": 1013.65,
+					"ozone": 278.38
+				},
+				{
+					"time": 1474200000,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.03,
+					"apparentTemperature": 59.03,
+					"dewPoint": 55.32,
+					"humidity": 0.88,
+					"windSpeed": 2.14,
+					"windBearing": 242,
+					"visibility": 10,
+					"cloudCover": 0.27,
+					"pressure": 1013.66,
+					"ozone": 278.44
+				},
+				{
+					"time": 1474203600,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-night",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.36,
+					"apparentTemperature": 59.36,
+					"dewPoint": 55.31,
+					"humidity": 0.86,
+					"windSpeed": 1.49,
+					"windBearing": 241,
+					"visibility": 10,
+					"cloudCover": 0.28,
+					"pressure": 1013.88,
+					"ozone": 278.49
+				},
+				{
+					"time": 1474207200,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 59.89,
+					"apparentTemperature": 59.89,
+					"dewPoint": 55.2,
+					"humidity": 0.84,
+					"windSpeed": 0.73,
+					"windBearing": 255,
+					"visibility": 10,
+					"cloudCover": 0.29,
+					"pressure": 1014.23,
+					"ozone": 278.5
+				},
+				{
+					"time": 1474210800,
+					"summary": "Partly Cloudy",
+					"icon": "partly-cloudy-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 61.11,
+					"apparentTemperature": 61.11,
+					"dewPoint": 55.11,
+					"humidity": 0.81,
+					"windSpeed": 0.64,
+					"windBearing": 307,
+					"visibility": 10,
+					"cloudCover": 0.27,
+					"pressure": 1014.54,
+					"ozone": 278.4
+				},
+				{
+					"time": 1474214400,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 63.56,
+					"apparentTemperature": 63.56,
+					"dewPoint": 54.86,
+					"humidity": 0.73,
+					"windSpeed": 0.81,
+					"windBearing": 318,
+					"visibility": 10,
+					"cloudCover": 0.21,
+					"pressure": 1014.78,
+					"ozone": 278.17
+				},
+				{
+					"time": 1474218000,
+					"summary": "Clear",
+					"icon": "clear-day",
+					"precipIntensity": 0,
+					"precipProbability": 0,
+					"temperature": 66.96,
+					"apparentTemperature": 66.96,
+					"dewPoint": 54.4,
+					"humidity": 0.64,
+					"windSpeed": 1.22,
+					"windBearing": 325,
+					"visibility": 10,
+					"cloudCover": 0.13,
+					"pressure": 1014.96,
+					"ozone": 277.83
+				}
+			]
+		},
+		"daily": {
+			"summary": "No precipitation throughout the week, with temperatures peaking at 81°F on Sunday.",
+			"icon": "clear-day",
+			"data": [
+				{
+					"time": 1474009200,
+					"summary": "Mostly cloudy until afternoon.",
+					"icon": "partly-cloudy-day",
+					"sunriseTime": 1474034052,
+					"sunsetTime": 1474078633,
+					"moonPhase": 0.5,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 53.49,
+					"temperatureMinTime": 1474020000,
+					"temperatureMax": 71.68,
+					"temperatureMaxTime": 1474063200,
+					"apparentTemperatureMin": 53.49,
+					"apparentTemperatureMinTime": 1474020000,
+					"apparentTemperatureMax": 71.68,
+					"apparentTemperatureMaxTime": 1474063200,
+					"dewPoint": 53.07,
+					"humidity": 0.79,
+					"windSpeed": 5.63,
+					"windBearing": 271,
+					"visibility": 7.54,
+					"cloudCover": 0.43,
+					"pressure": 1014.84,
+					"ozone": 296.71
+				},
+				{
+					"time": 1474095600,
+					"summary": "Mostly cloudy until afternoon.",
+					"icon": "partly-cloudy-day",
+					"sunriseTime": 1474120502,
+					"sunsetTime": 1474164939,
+					"moonPhase": 0.54,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 54.9,
+					"temperatureMinTime": 1474120800,
+					"temperatureMax": 74.52,
+					"temperatureMaxTime": 1474149600,
+					"apparentTemperatureMin": 54.9,
+					"apparentTemperatureMinTime": 1474120800,
+					"apparentTemperatureMax": 74.52,
+					"apparentTemperatureMaxTime": 1474149600,
+					"dewPoint": 54.44,
+					"humidity": 0.76,
+					"windSpeed": 5.17,
+					"windBearing": 267,
+					"visibility": 7.33,
+					"cloudCover": 0.45,
+					"pressure": 1014.51,
+					"ozone": 283.48
+				},
+				{
+					"time": 1474182000,
+					"summary": "Partly cloudy in the morning.",
+					"icon": "partly-cloudy-night",
+					"sunriseTime": 1474206953,
+					"sunsetTime": 1474251244,
+					"moonPhase": 0.57,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 58.79,
+					"temperatureMinTime": 1474196400,
+					"temperatureMax": 81.45,
+					"temperatureMaxTime": 1474239600,
+					"apparentTemperatureMin": 58.79,
+					"apparentTemperatureMinTime": 1474196400,
+					"apparentTemperatureMax": 81.19,
+					"apparentTemperatureMaxTime": 1474239600,
+					"dewPoint": 55.89,
+					"humidity": 0.68,
+					"windSpeed": 3.65,
+					"windBearing": 270,
+					"visibility": 9.96,
+					"cloudCover": 0.13,
+					"pressure": 1013.54,
+					"ozone": 276.8
+				},
+				{
+					"time": 1474268400,
+					"summary": "Clear throughout the day.",
+					"icon": "clear-day",
+					"sunriseTime": 1474293403,
+					"sunsetTime": 1474337550,
+					"moonPhase": 0.61,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 62.56,
+					"temperatureMinTime": 1474286400,
+					"temperatureMax": 78.37,
+					"temperatureMaxTime": 1474318800,
+					"apparentTemperatureMin": 62.56,
+					"apparentTemperatureMinTime": 1474286400,
+					"apparentTemperatureMax": 78.37,
+					"apparentTemperatureMaxTime": 1474318800,
+					"dewPoint": 57.19,
+					"humidity": 0.68,
+					"windSpeed": 4.35,
+					"windBearing": 241,
+					"visibility": 10,
+					"cloudCover": 0.12,
+					"pressure": 1012.72,
+					"ozone": 276.4
+				},
+				{
+					"time": 1474354800,
+					"summary": "Clear throughout the day.",
+					"icon": "clear-day",
+					"sunriseTime": 1474379853,
+					"sunsetTime": 1474423855,
+					"moonPhase": 0.65,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 58.7,
+					"temperatureMinTime": 1474380000,
+					"temperatureMax": 66.28,
+					"temperatureMaxTime": 1474412400,
+					"apparentTemperatureMin": 58.7,
+					"apparentTemperatureMinTime": 1474380000,
+					"apparentTemperatureMax": 66.28,
+					"apparentTemperatureMaxTime": 1474412400,
+					"dewPoint": 51.51,
+					"humidity": 0.7,
+					"windSpeed": 6.69,
+					"windBearing": 220,
+					"cloudCover": 0.05,
+					"pressure": 1013.67,
+					"ozone": 276.54
+				},
+				{
+					"time": 1474441200,
+					"summary": "Mostly cloudy throughout the day.",
+					"icon": "partly-cloudy-day",
+					"sunriseTime": 1474466304,
+					"sunsetTime": 1474510161,
+					"moonPhase": 0.69,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 56.1,
+					"temperatureMinTime": 1474462800,
+					"temperatureMax": 64.28,
+					"temperatureMaxTime": 1474495200,
+					"apparentTemperatureMin": 56.1,
+					"apparentTemperatureMinTime": 1474462800,
+					"apparentTemperatureMax": 64.28,
+					"apparentTemperatureMaxTime": 1474495200,
+					"dewPoint": 49.04,
+					"humidity": 0.7,
+					"windSpeed": 5.96,
+					"windBearing": 254,
+					"cloudCover": 0.55,
+					"pressure": 1013.69,
+					"ozone": 274.3
+				},
+				{
+					"time": 1474527600,
+					"summary": "Partly cloudy starting in the evening.",
+					"icon": "partly-cloudy-night",
+					"sunriseTime": 1474552754,
+					"sunsetTime": 1474596466,
+					"moonPhase": 0.72,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 53.34,
+					"temperatureMinTime": 1474549200,
+					"temperatureMax": 67.11,
+					"temperatureMaxTime": 1474585200,
+					"apparentTemperatureMin": 53.34,
+					"apparentTemperatureMinTime": 1474549200,
+					"apparentTemperatureMax": 67.11,
+					"apparentTemperatureMaxTime": 1474585200,
+					"dewPoint": 46.22,
+					"humidity": 0.64,
+					"windSpeed": 6.49,
+					"windBearing": 274,
+					"cloudCover": 0.16,
+					"pressure": 1014.15,
+					"ozone": 291.9
+				},
+				{
+					"time": 1474614000,
+					"summary": "Clear throughout the day.",
+					"icon": "clear-day",
+					"sunriseTime": 1474639205,
+					"sunsetTime": 1474682772,
+					"moonPhase": 0.76,
+					"precipIntensity": 0,
+					"precipIntensityMax": 0,
+					"precipProbability": 0,
+					"temperatureMin": 55.67,
+					"temperatureMinTime": 1474632000,
+					"temperatureMax": 70.57,
+					"temperatureMaxTime": 1474668000,
+					"apparentTemperatureMin": 55.67,
+					"apparentTemperatureMinTime": 1474632000,
+					"apparentTemperatureMax": 70.57,
+					"apparentTemperatureMaxTime": 1474668000,
+					"dewPoint": 46.15,
+					"humidity": 0.58,
+					"windSpeed": 4.38,
+					"windBearing": 275,
+					"cloudCover": 0.08,
+					"pressure": 1015.83,
+					"ozone": 267.2
+				}
+			]
+		},
+		"flags": {
+			"sources": [
+				"darksky",
+				"lamp",
+				"gfs",
+				"cmc",
+				"nam",
+				"rap",
+				"rtma",
+				"sref",
+				"fnmoc",
+				"isd",
+				"nwspa",
+				"madis",
+				"nearest-precip"
+			],
+			"darksky-stations": [
+				"KMUX",
+				"KDAX"
+			],
+			"lamp-stations": [
+				"KAPC",
+				"KCCR",
+				"KHWD",
+				"KLVK",
+				"KNUQ",
+				"KOAK",
+				"KPAO",
+				"KSFO",
+				"KSQL"
+			],
+			"isd-stations": [
+				"724943-99999",
+				"745039-99999",
+				"745065-99999",
+				"994016-99999",
+				"998479-99999"
+			],
+			"madis-stations": [
+				"AU915",
+				"C5988",
+				"C8158",
+				"C9629",
+				"CQ147",
+				"D5422",
+				"E0426",
+				"E9227",
+				"FTPC1",
+				"GGBC1",
+				"OKXC1",
+				"OMHC1",
+				"PPXC1",
+				"PXOC1",
+				"SFOC1",
+				"TIBC1"
+			],
+			"units": "us"
+		}
+	};
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./clear-day.svg": 308,
-		"./clear-night.svg": 419,
-		"./cloudy.svg": 420,
-		"./default.svg": 421,
-		"./fog.svg": 422,
-		"./partly-cloudy-day.svg": 423,
-		"./partly-cloudy-night.svg": 424,
-		"./rain.svg": 425,
-		"./sleet.svg": 426,
-		"./snow.svg": 427,
-		"./wind.svg": 428
+		"./clear-day.svg": 310,
+		"./clear-night.svg": 421,
+		"./cloudy.svg": 422,
+		"./default.svg": 423,
+		"./fog.svg": 424,
+		"./partly-cloudy-day.svg": 425,
+		"./partly-cloudy-night.svg": 426,
+		"./rain.svg": 427,
+		"./sleet.svg": 428,
+		"./snow.svg": 429,
+		"./wind.svg": 430
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -37259,17 +38784,17 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 307;
+	webpackContext.id = 309;
 
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -37337,10 +38862,10 @@
 	});
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var forEach  = __webpack_require__(310);
+	var forEach  = __webpack_require__(312);
 	var ATTR_KEY = 'data-svgreactloader';
 	
 	var MODULE = {
@@ -37385,13 +38910,13 @@
 
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayEach = __webpack_require__(311),
-	    baseEach = __webpack_require__(312),
-	    baseIteratee = __webpack_require__(333),
-	    isArray = __webpack_require__(326);
+	var arrayEach = __webpack_require__(313),
+	    baseEach = __webpack_require__(314),
+	    baseIteratee = __webpack_require__(335),
+	    isArray = __webpack_require__(328);
 	
 	/**
 	 * Iterates over elements of `collection` and invokes `iteratee` for each element.
@@ -37432,7 +38957,7 @@
 
 
 /***/ },
-/* 311 */
+/* 313 */
 /***/ function(module, exports) {
 
 	/**
@@ -37460,11 +38985,11 @@
 
 
 /***/ },
-/* 312 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(313),
-	    createBaseEach = __webpack_require__(332);
+	var baseForOwn = __webpack_require__(315),
+	    createBaseEach = __webpack_require__(334);
 	
 	/**
 	 * The base implementation of `_.forEach` without support for iteratee shorthands.
@@ -37480,11 +39005,11 @@
 
 
 /***/ },
-/* 313 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(314),
-	    keys = __webpack_require__(316);
+	var baseFor = __webpack_require__(316),
+	    keys = __webpack_require__(318);
 	
 	/**
 	 * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -37502,10 +39027,10 @@
 
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(315);
+	var createBaseFor = __webpack_require__(317);
 	
 	/**
 	 * The base implementation of `baseForOwn` which iterates over `object`
@@ -37524,7 +39049,7 @@
 
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports) {
 
 	/**
@@ -37555,12 +39080,12 @@
 
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayLikeKeys = __webpack_require__(317),
-	    baseKeys = __webpack_require__(328),
-	    isArrayLike = __webpack_require__(321);
+	var arrayLikeKeys = __webpack_require__(319),
+	    baseKeys = __webpack_require__(330),
+	    isArrayLike = __webpack_require__(323);
 	
 	/**
 	 * Creates an array of the own enumerable property names of `object`.
@@ -37598,13 +39123,13 @@
 
 
 /***/ },
-/* 317 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseTimes = __webpack_require__(318),
-	    isArguments = __webpack_require__(319),
-	    isArray = __webpack_require__(326),
-	    isIndex = __webpack_require__(327);
+	var baseTimes = __webpack_require__(320),
+	    isArguments = __webpack_require__(321),
+	    isArray = __webpack_require__(328),
+	    isIndex = __webpack_require__(329);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -37643,7 +39168,7 @@
 
 
 /***/ },
-/* 318 */
+/* 320 */
 /***/ function(module, exports) {
 
 	/**
@@ -37669,10 +39194,10 @@
 
 
 /***/ },
-/* 319 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLikeObject = __webpack_require__(320);
+	var isArrayLikeObject = __webpack_require__(322);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -37721,11 +39246,11 @@
 
 
 /***/ },
-/* 320 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(321),
-	    isObjectLike = __webpack_require__(325);
+	var isArrayLike = __webpack_require__(323),
+	    isObjectLike = __webpack_require__(327);
 	
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -37760,11 +39285,11 @@
 
 
 /***/ },
-/* 321 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(322),
-	    isLength = __webpack_require__(324);
+	var isFunction = __webpack_require__(324),
+	    isLength = __webpack_require__(326);
 	
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -37799,10 +39324,10 @@
 
 
 /***/ },
-/* 322 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(323);
+	var isObject = __webpack_require__(325);
 	
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -37846,7 +39371,7 @@
 
 
 /***/ },
-/* 323 */
+/* 325 */
 /***/ function(module, exports) {
 
 	/**
@@ -37883,7 +39408,7 @@
 
 
 /***/ },
-/* 324 */
+/* 326 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -37924,7 +39449,7 @@
 
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports) {
 
 	/**
@@ -37959,7 +39484,7 @@
 
 
 /***/ },
-/* 326 */
+/* 328 */
 /***/ function(module, exports) {
 
 	/**
@@ -37991,7 +39516,7 @@
 
 
 /***/ },
-/* 327 */
+/* 329 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -38019,11 +39544,11 @@
 
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isPrototype = __webpack_require__(329),
-	    nativeKeys = __webpack_require__(330);
+	var isPrototype = __webpack_require__(331),
+	    nativeKeys = __webpack_require__(332);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -38055,7 +39580,7 @@
 
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -38079,10 +39604,10 @@
 
 
 /***/ },
-/* 330 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(331);
+	var overArg = __webpack_require__(333);
 	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = overArg(Object.keys, Object);
@@ -38091,7 +39616,7 @@
 
 
 /***/ },
-/* 331 */
+/* 333 */
 /***/ function(module, exports) {
 
 	/**
@@ -38112,10 +39637,10 @@
 
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(321);
+	var isArrayLike = __webpack_require__(323);
 	
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -38150,14 +39675,14 @@
 
 
 /***/ },
-/* 333 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseMatches = __webpack_require__(334),
-	    baseMatchesProperty = __webpack_require__(401),
-	    identity = __webpack_require__(415),
-	    isArray = __webpack_require__(326),
-	    property = __webpack_require__(416);
+	var baseMatches = __webpack_require__(336),
+	    baseMatchesProperty = __webpack_require__(403),
+	    identity = __webpack_require__(417),
+	    isArray = __webpack_require__(328),
+	    property = __webpack_require__(418);
 	
 	/**
 	 * The base implementation of `_.iteratee`.
@@ -38187,12 +39712,12 @@
 
 
 /***/ },
-/* 334 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsMatch = __webpack_require__(335),
-	    getMatchData = __webpack_require__(398),
-	    matchesStrictComparable = __webpack_require__(400);
+	var baseIsMatch = __webpack_require__(337),
+	    getMatchData = __webpack_require__(400),
+	    matchesStrictComparable = __webpack_require__(402);
 	
 	/**
 	 * The base implementation of `_.matches` which doesn't clone `source`.
@@ -38215,11 +39740,11 @@
 
 
 /***/ },
-/* 335 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(336),
-	    baseIsEqual = __webpack_require__(375);
+	var Stack = __webpack_require__(338),
+	    baseIsEqual = __webpack_require__(377);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -38283,15 +39808,15 @@
 
 
 /***/ },
-/* 336 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(337),
-	    stackClear = __webpack_require__(345),
-	    stackDelete = __webpack_require__(346),
-	    stackGet = __webpack_require__(347),
-	    stackHas = __webpack_require__(348),
-	    stackSet = __webpack_require__(349);
+	var ListCache = __webpack_require__(339),
+	    stackClear = __webpack_require__(347),
+	    stackDelete = __webpack_require__(348),
+	    stackGet = __webpack_require__(349),
+	    stackHas = __webpack_require__(350),
+	    stackSet = __webpack_require__(351);
 	
 	/**
 	 * Creates a stack cache object to store key-value pairs.
@@ -38315,14 +39840,14 @@
 
 
 /***/ },
-/* 337 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var listCacheClear = __webpack_require__(338),
-	    listCacheDelete = __webpack_require__(339),
-	    listCacheGet = __webpack_require__(342),
-	    listCacheHas = __webpack_require__(343),
-	    listCacheSet = __webpack_require__(344);
+	var listCacheClear = __webpack_require__(340),
+	    listCacheDelete = __webpack_require__(341),
+	    listCacheGet = __webpack_require__(344),
+	    listCacheHas = __webpack_require__(345),
+	    listCacheSet = __webpack_require__(346);
 	
 	/**
 	 * Creates an list cache object.
@@ -38353,7 +39878,7 @@
 
 
 /***/ },
-/* 338 */
+/* 340 */
 /***/ function(module, exports) {
 
 	/**
@@ -38371,10 +39896,10 @@
 
 
 /***/ },
-/* 339 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(340);
+	var assocIndexOf = __webpack_require__(342);
 	
 	/** Used for built-in method references. */
 	var arrayProto = Array.prototype;
@@ -38411,10 +39936,10 @@
 
 
 /***/ },
-/* 340 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(341);
+	var eq = __webpack_require__(343);
 	
 	/**
 	 * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -38438,7 +39963,7 @@
 
 
 /***/ },
-/* 341 */
+/* 343 */
 /***/ function(module, exports) {
 
 	/**
@@ -38481,10 +40006,10 @@
 
 
 /***/ },
-/* 342 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(340);
+	var assocIndexOf = __webpack_require__(342);
 	
 	/**
 	 * Gets the list cache value for `key`.
@@ -38506,10 +40031,10 @@
 
 
 /***/ },
-/* 343 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(340);
+	var assocIndexOf = __webpack_require__(342);
 	
 	/**
 	 * Checks if a list cache value for `key` exists.
@@ -38528,10 +40053,10 @@
 
 
 /***/ },
-/* 344 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(340);
+	var assocIndexOf = __webpack_require__(342);
 	
 	/**
 	 * Sets the list cache `key` to `value`.
@@ -38559,10 +40084,10 @@
 
 
 /***/ },
-/* 345 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(337);
+	var ListCache = __webpack_require__(339);
 	
 	/**
 	 * Removes all key-value entries from the stack.
@@ -38579,7 +40104,7 @@
 
 
 /***/ },
-/* 346 */
+/* 348 */
 /***/ function(module, exports) {
 
 	/**
@@ -38599,7 +40124,7 @@
 
 
 /***/ },
-/* 347 */
+/* 349 */
 /***/ function(module, exports) {
 
 	/**
@@ -38619,7 +40144,7 @@
 
 
 /***/ },
-/* 348 */
+/* 350 */
 /***/ function(module, exports) {
 
 	/**
@@ -38639,12 +40164,12 @@
 
 
 /***/ },
-/* 349 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(337),
-	    Map = __webpack_require__(350),
-	    MapCache = __webpack_require__(360);
+	var ListCache = __webpack_require__(339),
+	    Map = __webpack_require__(352),
+	    MapCache = __webpack_require__(362);
 	
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -38677,11 +40202,11 @@
 
 
 /***/ },
-/* 350 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351),
-	    root = __webpack_require__(356);
+	var getNative = __webpack_require__(353),
+	    root = __webpack_require__(358);
 	
 	/* Built-in method references that are verified to be native. */
 	var Map = getNative(root, 'Map');
@@ -38690,11 +40215,11 @@
 
 
 /***/ },
-/* 351 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsNative = __webpack_require__(352),
-	    getValue = __webpack_require__(359);
+	var baseIsNative = __webpack_require__(354),
+	    getValue = __webpack_require__(361);
 	
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -38713,14 +40238,14 @@
 
 
 /***/ },
-/* 352 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(322),
-	    isHostObject = __webpack_require__(353),
-	    isMasked = __webpack_require__(354),
-	    isObject = __webpack_require__(323),
-	    toSource = __webpack_require__(358);
+	var isFunction = __webpack_require__(324),
+	    isHostObject = __webpack_require__(355),
+	    isMasked = __webpack_require__(356),
+	    isObject = __webpack_require__(325),
+	    toSource = __webpack_require__(360);
 	
 	/**
 	 * Used to match `RegExp`
@@ -38767,7 +40292,7 @@
 
 
 /***/ },
-/* 353 */
+/* 355 */
 /***/ function(module, exports) {
 
 	/**
@@ -38793,10 +40318,10 @@
 
 
 /***/ },
-/* 354 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var coreJsData = __webpack_require__(355);
+	var coreJsData = __webpack_require__(357);
 	
 	/** Used to detect methods masquerading as native. */
 	var maskSrcKey = (function() {
@@ -38819,10 +40344,10 @@
 
 
 /***/ },
-/* 355 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(356);
+	var root = __webpack_require__(358);
 	
 	/** Used to detect overreaching core-js shims. */
 	var coreJsData = root['__core-js_shared__'];
@@ -38831,10 +40356,10 @@
 
 
 /***/ },
-/* 356 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(357);
+	var freeGlobal = __webpack_require__(359);
 	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -38846,7 +40371,7 @@
 
 
 /***/ },
-/* 357 */
+/* 359 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -38857,7 +40382,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 358 */
+/* 360 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -38889,7 +40414,7 @@
 
 
 /***/ },
-/* 359 */
+/* 361 */
 /***/ function(module, exports) {
 
 	/**
@@ -38908,14 +40433,14 @@
 
 
 /***/ },
-/* 360 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mapCacheClear = __webpack_require__(361),
-	    mapCacheDelete = __webpack_require__(369),
-	    mapCacheGet = __webpack_require__(372),
-	    mapCacheHas = __webpack_require__(373),
-	    mapCacheSet = __webpack_require__(374);
+	var mapCacheClear = __webpack_require__(363),
+	    mapCacheDelete = __webpack_require__(371),
+	    mapCacheGet = __webpack_require__(374),
+	    mapCacheHas = __webpack_require__(375),
+	    mapCacheSet = __webpack_require__(376);
 	
 	/**
 	 * Creates a map cache object to store key-value pairs.
@@ -38946,12 +40471,12 @@
 
 
 /***/ },
-/* 361 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Hash = __webpack_require__(362),
-	    ListCache = __webpack_require__(337),
-	    Map = __webpack_require__(350);
+	var Hash = __webpack_require__(364),
+	    ListCache = __webpack_require__(339),
+	    Map = __webpack_require__(352);
 	
 	/**
 	 * Removes all key-value entries from the map.
@@ -38972,14 +40497,14 @@
 
 
 /***/ },
-/* 362 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hashClear = __webpack_require__(363),
-	    hashDelete = __webpack_require__(365),
-	    hashGet = __webpack_require__(366),
-	    hashHas = __webpack_require__(367),
-	    hashSet = __webpack_require__(368);
+	var hashClear = __webpack_require__(365),
+	    hashDelete = __webpack_require__(367),
+	    hashGet = __webpack_require__(368),
+	    hashHas = __webpack_require__(369),
+	    hashSet = __webpack_require__(370);
 	
 	/**
 	 * Creates a hash object.
@@ -39010,10 +40535,10 @@
 
 
 /***/ },
-/* 363 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(364);
+	var nativeCreate = __webpack_require__(366);
 	
 	/**
 	 * Removes all key-value entries from the hash.
@@ -39030,10 +40555,10 @@
 
 
 /***/ },
-/* 364 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351);
+	var getNative = __webpack_require__(353);
 	
 	/* Built-in method references that are verified to be native. */
 	var nativeCreate = getNative(Object, 'create');
@@ -39042,7 +40567,7 @@
 
 
 /***/ },
-/* 365 */
+/* 367 */
 /***/ function(module, exports) {
 
 	/**
@@ -39063,10 +40588,10 @@
 
 
 /***/ },
-/* 366 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(364);
+	var nativeCreate = __webpack_require__(366);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -39099,10 +40624,10 @@
 
 
 /***/ },
-/* 367 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(364);
+	var nativeCreate = __webpack_require__(366);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -39128,10 +40653,10 @@
 
 
 /***/ },
-/* 368 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(364);
+	var nativeCreate = __webpack_require__(366);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -39156,10 +40681,10 @@
 
 
 /***/ },
-/* 369 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(370);
+	var getMapData = __webpack_require__(372);
 	
 	/**
 	 * Removes `key` and its value from the map.
@@ -39178,10 +40703,10 @@
 
 
 /***/ },
-/* 370 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isKeyable = __webpack_require__(371);
+	var isKeyable = __webpack_require__(373);
 	
 	/**
 	 * Gets the data for `map`.
@@ -39202,7 +40727,7 @@
 
 
 /***/ },
-/* 371 */
+/* 373 */
 /***/ function(module, exports) {
 
 	/**
@@ -39223,10 +40748,10 @@
 
 
 /***/ },
-/* 372 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(370);
+	var getMapData = __webpack_require__(372);
 	
 	/**
 	 * Gets the map value for `key`.
@@ -39245,10 +40770,10 @@
 
 
 /***/ },
-/* 373 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(370);
+	var getMapData = __webpack_require__(372);
 	
 	/**
 	 * Checks if a map value for `key` exists.
@@ -39267,10 +40792,10 @@
 
 
 /***/ },
-/* 374 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(370);
+	var getMapData = __webpack_require__(372);
 	
 	/**
 	 * Sets the map `key` to `value`.
@@ -39291,12 +40816,12 @@
 
 
 /***/ },
-/* 375 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqualDeep = __webpack_require__(376),
-	    isObject = __webpack_require__(323),
-	    isObjectLike = __webpack_require__(325);
+	var baseIsEqualDeep = __webpack_require__(378),
+	    isObject = __webpack_require__(325),
+	    isObjectLike = __webpack_require__(327);
 	
 	/**
 	 * The base implementation of `_.isEqual` which supports partial comparisons
@@ -39327,17 +40852,17 @@
 
 
 /***/ },
-/* 376 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(336),
-	    equalArrays = __webpack_require__(377),
-	    equalByTag = __webpack_require__(382),
-	    equalObjects = __webpack_require__(387),
-	    getTag = __webpack_require__(388),
-	    isArray = __webpack_require__(326),
-	    isHostObject = __webpack_require__(353),
-	    isTypedArray = __webpack_require__(394);
+	var Stack = __webpack_require__(338),
+	    equalArrays = __webpack_require__(379),
+	    equalByTag = __webpack_require__(384),
+	    equalObjects = __webpack_require__(389),
+	    getTag = __webpack_require__(390),
+	    isArray = __webpack_require__(328),
+	    isHostObject = __webpack_require__(355),
+	    isTypedArray = __webpack_require__(396);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var PARTIAL_COMPARE_FLAG = 2;
@@ -39415,11 +40940,11 @@
 
 
 /***/ },
-/* 377 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SetCache = __webpack_require__(378),
-	    arraySome = __webpack_require__(381);
+	var SetCache = __webpack_require__(380),
+	    arraySome = __webpack_require__(383);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -39504,12 +41029,12 @@
 
 
 /***/ },
-/* 378 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(360),
-	    setCacheAdd = __webpack_require__(379),
-	    setCacheHas = __webpack_require__(380);
+	var MapCache = __webpack_require__(362),
+	    setCacheAdd = __webpack_require__(381),
+	    setCacheHas = __webpack_require__(382);
 	
 	/**
 	 *
@@ -39537,7 +41062,7 @@
 
 
 /***/ },
-/* 379 */
+/* 381 */
 /***/ function(module, exports) {
 
 	/** Used to stand-in for `undefined` hash values. */
@@ -39562,7 +41087,7 @@
 
 
 /***/ },
-/* 380 */
+/* 382 */
 /***/ function(module, exports) {
 
 	/**
@@ -39582,7 +41107,7 @@
 
 
 /***/ },
-/* 381 */
+/* 383 */
 /***/ function(module, exports) {
 
 	/**
@@ -39611,15 +41136,15 @@
 
 
 /***/ },
-/* 382 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(383),
-	    Uint8Array = __webpack_require__(384),
-	    eq = __webpack_require__(341),
-	    equalArrays = __webpack_require__(377),
-	    mapToArray = __webpack_require__(385),
-	    setToArray = __webpack_require__(386);
+	var Symbol = __webpack_require__(385),
+	    Uint8Array = __webpack_require__(386),
+	    eq = __webpack_require__(343),
+	    equalArrays = __webpack_require__(379),
+	    mapToArray = __webpack_require__(387),
+	    setToArray = __webpack_require__(388);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -39730,10 +41255,10 @@
 
 
 /***/ },
-/* 383 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(356);
+	var root = __webpack_require__(358);
 	
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -39742,10 +41267,10 @@
 
 
 /***/ },
-/* 384 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(356);
+	var root = __webpack_require__(358);
 	
 	/** Built-in value references. */
 	var Uint8Array = root.Uint8Array;
@@ -39754,7 +41279,7 @@
 
 
 /***/ },
-/* 385 */
+/* 387 */
 /***/ function(module, exports) {
 
 	/**
@@ -39778,7 +41303,7 @@
 
 
 /***/ },
-/* 386 */
+/* 388 */
 /***/ function(module, exports) {
 
 	/**
@@ -39802,10 +41327,10 @@
 
 
 /***/ },
-/* 387 */
+/* 389 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var keys = __webpack_require__(316);
+	var keys = __webpack_require__(318);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var PARTIAL_COMPARE_FLAG = 2;
@@ -39898,16 +41423,16 @@
 
 
 /***/ },
-/* 388 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DataView = __webpack_require__(389),
-	    Map = __webpack_require__(350),
-	    Promise = __webpack_require__(390),
-	    Set = __webpack_require__(391),
-	    WeakMap = __webpack_require__(392),
-	    baseGetTag = __webpack_require__(393),
-	    toSource = __webpack_require__(358);
+	var DataView = __webpack_require__(391),
+	    Map = __webpack_require__(352),
+	    Promise = __webpack_require__(392),
+	    Set = __webpack_require__(393),
+	    WeakMap = __webpack_require__(394),
+	    baseGetTag = __webpack_require__(395),
+	    toSource = __webpack_require__(360);
 	
 	/** `Object#toString` result references. */
 	var mapTag = '[object Map]',
@@ -39973,11 +41498,11 @@
 
 
 /***/ },
-/* 389 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351),
-	    root = __webpack_require__(356);
+	var getNative = __webpack_require__(353),
+	    root = __webpack_require__(358);
 	
 	/* Built-in method references that are verified to be native. */
 	var DataView = getNative(root, 'DataView');
@@ -39986,11 +41511,11 @@
 
 
 /***/ },
-/* 390 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351),
-	    root = __webpack_require__(356);
+	var getNative = __webpack_require__(353),
+	    root = __webpack_require__(358);
 	
 	/* Built-in method references that are verified to be native. */
 	var Promise = getNative(root, 'Promise');
@@ -39999,11 +41524,11 @@
 
 
 /***/ },
-/* 391 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351),
-	    root = __webpack_require__(356);
+	var getNative = __webpack_require__(353),
+	    root = __webpack_require__(358);
 	
 	/* Built-in method references that are verified to be native. */
 	var Set = getNative(root, 'Set');
@@ -40012,11 +41537,11 @@
 
 
 /***/ },
-/* 392 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(351),
-	    root = __webpack_require__(356);
+	var getNative = __webpack_require__(353),
+	    root = __webpack_require__(358);
 	
 	/* Built-in method references that are verified to be native. */
 	var WeakMap = getNative(root, 'WeakMap');
@@ -40025,7 +41550,7 @@
 
 
 /***/ },
-/* 393 */
+/* 395 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -40053,12 +41578,12 @@
 
 
 /***/ },
-/* 394 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsTypedArray = __webpack_require__(395),
-	    baseUnary = __webpack_require__(396),
-	    nodeUtil = __webpack_require__(397);
+	var baseIsTypedArray = __webpack_require__(397),
+	    baseUnary = __webpack_require__(398),
+	    nodeUtil = __webpack_require__(399);
 	
 	/* Node.js helper references. */
 	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -40086,11 +41611,11 @@
 
 
 /***/ },
-/* 395 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(324),
-	    isObjectLike = __webpack_require__(325);
+	var isLength = __webpack_require__(326),
+	    isObjectLike = __webpack_require__(327);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -40161,7 +41686,7 @@
 
 
 /***/ },
-/* 396 */
+/* 398 */
 /***/ function(module, exports) {
 
 	/**
@@ -40181,10 +41706,10 @@
 
 
 /***/ },
-/* 397 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(357);
+	/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(359);
 	
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -40210,11 +41735,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(303)(module)))
 
 /***/ },
-/* 398 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isStrictComparable = __webpack_require__(399),
-	    keys = __webpack_require__(316);
+	var isStrictComparable = __webpack_require__(401),
+	    keys = __webpack_require__(318);
 	
 	/**
 	 * Gets the property names, values, and compare flags of `object`.
@@ -40240,10 +41765,10 @@
 
 
 /***/ },
-/* 399 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(323);
+	var isObject = __webpack_require__(325);
 	
 	/**
 	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -40261,7 +41786,7 @@
 
 
 /***/ },
-/* 400 */
+/* 402 */
 /***/ function(module, exports) {
 
 	/**
@@ -40287,16 +41812,16 @@
 
 
 /***/ },
-/* 401 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqual = __webpack_require__(375),
-	    get = __webpack_require__(402),
-	    hasIn = __webpack_require__(412),
-	    isKey = __webpack_require__(410),
-	    isStrictComparable = __webpack_require__(399),
-	    matchesStrictComparable = __webpack_require__(400),
-	    toKey = __webpack_require__(411);
+	var baseIsEqual = __webpack_require__(377),
+	    get = __webpack_require__(404),
+	    hasIn = __webpack_require__(414),
+	    isKey = __webpack_require__(412),
+	    isStrictComparable = __webpack_require__(401),
+	    matchesStrictComparable = __webpack_require__(402),
+	    toKey = __webpack_require__(413);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -40326,10 +41851,10 @@
 
 
 /***/ },
-/* 402 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(403);
+	var baseGet = __webpack_require__(405);
 	
 	/**
 	 * Gets the value at `path` of `object`. If the resolved value is
@@ -40365,12 +41890,12 @@
 
 
 /***/ },
-/* 403 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var castPath = __webpack_require__(404),
-	    isKey = __webpack_require__(410),
-	    toKey = __webpack_require__(411);
+	var castPath = __webpack_require__(406),
+	    isKey = __webpack_require__(412),
+	    toKey = __webpack_require__(413);
 	
 	/**
 	 * The base implementation of `_.get` without support for default values.
@@ -40396,11 +41921,11 @@
 
 
 /***/ },
-/* 404 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(326),
-	    stringToPath = __webpack_require__(405);
+	var isArray = __webpack_require__(328),
+	    stringToPath = __webpack_require__(407);
 	
 	/**
 	 * Casts `value` to a path array if it's not one.
@@ -40417,11 +41942,11 @@
 
 
 /***/ },
-/* 405 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var memoize = __webpack_require__(406),
-	    toString = __webpack_require__(407);
+	var memoize = __webpack_require__(408),
+	    toString = __webpack_require__(409);
 	
 	/** Used to match property names within property paths. */
 	var reLeadingDot = /^\./,
@@ -40454,10 +41979,10 @@
 
 
 /***/ },
-/* 406 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(360);
+	var MapCache = __webpack_require__(362);
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -40533,10 +42058,10 @@
 
 
 /***/ },
-/* 407 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(408);
+	var baseToString = __webpack_require__(410);
 	
 	/**
 	 * Converts `value` to a string. An empty string is returned for `null`
@@ -40567,11 +42092,11 @@
 
 
 /***/ },
-/* 408 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(383),
-	    isSymbol = __webpack_require__(409);
+	var Symbol = __webpack_require__(385),
+	    isSymbol = __webpack_require__(411);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -40604,10 +42129,10 @@
 
 
 /***/ },
-/* 409 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(325);
+	var isObjectLike = __webpack_require__(327);
 	
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -40648,11 +42173,11 @@
 
 
 /***/ },
-/* 410 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(326),
-	    isSymbol = __webpack_require__(409);
+	var isArray = __webpack_require__(328),
+	    isSymbol = __webpack_require__(411);
 	
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
@@ -40683,10 +42208,10 @@
 
 
 /***/ },
-/* 411 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isSymbol = __webpack_require__(409);
+	var isSymbol = __webpack_require__(411);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -40710,11 +42235,11 @@
 
 
 /***/ },
-/* 412 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseHasIn = __webpack_require__(413),
-	    hasPath = __webpack_require__(414);
+	var baseHasIn = __webpack_require__(415),
+	    hasPath = __webpack_require__(416);
 	
 	/**
 	 * Checks if `path` is a direct or inherited property of `object`.
@@ -40750,7 +42275,7 @@
 
 
 /***/ },
-/* 413 */
+/* 415 */
 /***/ function(module, exports) {
 
 	/**
@@ -40769,16 +42294,16 @@
 
 
 /***/ },
-/* 414 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var castPath = __webpack_require__(404),
-	    isArguments = __webpack_require__(319),
-	    isArray = __webpack_require__(326),
-	    isIndex = __webpack_require__(327),
-	    isKey = __webpack_require__(410),
-	    isLength = __webpack_require__(324),
-	    toKey = __webpack_require__(411);
+	var castPath = __webpack_require__(406),
+	    isArguments = __webpack_require__(321),
+	    isArray = __webpack_require__(328),
+	    isIndex = __webpack_require__(329),
+	    isKey = __webpack_require__(412),
+	    isLength = __webpack_require__(326),
+	    toKey = __webpack_require__(413);
 	
 	/**
 	 * Checks if `path` exists on `object`.
@@ -40815,7 +42340,7 @@
 
 
 /***/ },
-/* 415 */
+/* 417 */
 /***/ function(module, exports) {
 
 	/**
@@ -40842,13 +42367,13 @@
 
 
 /***/ },
-/* 416 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(417),
-	    basePropertyDeep = __webpack_require__(418),
-	    isKey = __webpack_require__(410),
-	    toKey = __webpack_require__(411);
+	var baseProperty = __webpack_require__(419),
+	    basePropertyDeep = __webpack_require__(420),
+	    isKey = __webpack_require__(412),
+	    toKey = __webpack_require__(413);
 	
 	/**
 	 * Creates a function that returns the value at `path` of a given object.
@@ -40880,7 +42405,7 @@
 
 
 /***/ },
-/* 417 */
+/* 419 */
 /***/ function(module, exports) {
 
 	/**
@@ -40900,10 +42425,10 @@
 
 
 /***/ },
-/* 418 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(403);
+	var baseGet = __webpack_require__(405);
 	
 	/**
 	 * A specialized version of `baseProperty` which supports deep paths.
@@ -40922,13 +42447,13 @@
 
 
 /***/ },
-/* 419 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -40956,13 +42481,13 @@
 	});
 
 /***/ },
-/* 420 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -40990,13 +42515,13 @@
 	});
 
 /***/ },
-/* 421 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41023,13 +42548,13 @@
 	});
 
 /***/ },
-/* 422 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41064,13 +42589,13 @@
 	});
 
 /***/ },
-/* 423 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41118,13 +42643,13 @@
 	});
 
 /***/ },
-/* 424 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41152,13 +42677,13 @@
 	});
 
 /***/ },
-/* 425 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41189,13 +42714,13 @@
 	});
 
 /***/ },
-/* 426 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41248,13 +42773,13 @@
 	});
 
 /***/ },
-/* 427 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41285,13 +42810,13 @@
 	});
 
 /***/ },
-/* 428 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var helpers = __webpack_require__(309)(__webpack_require__(34));
+	var helpers = __webpack_require__(311)(__webpack_require__(34));
 	
 	module.exports = React.createClass({
 	
@@ -41327,23 +42852,23 @@
 	});
 
 /***/ },
-/* 429 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"container-src-components-map--🍄🍽🛌💆🏼🇹🇦"};
-
-/***/ },
-/* 430 */,
 /* 431 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-home--😛🇭🇷🇪🇹🎾🙆"};
+	module.exports = {"container":"container-src-components-map--🐯🇷🇸👖😛🚴🏽","mapContainer":"mapContainer-src-components-map--🏂🇨🇴🇲🇻👌🏽🏇"};
 
 /***/ },
 /* 432 */,
 /* 433 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"column":"column-src-components-home--🇨🇺🏇🏿😚🏂🏾🇬🇱"};
+
+/***/ },
+/* 434 */,
+/* 435 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

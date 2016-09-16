@@ -4,11 +4,17 @@
   "description": "A working, up-to-date example of how to use static-site-generator-webpack-plugin with react-router.",
   "main": "webpack.config.js",
   "dependencies": {
+    "chart": "^0.1.2",
+    "chartjs": "^0.3.24",
+    "d3": "^4.2.3",
     "fetch-jsonp": "^1.0.1",
     "forecast-io": "^1.0.3",
     "google-maps-api": "^2.0.1",
     "node-fetch": "^1.6.1",
+    "rd3": "^0.7.1",
     "react": "^15.3.1",
+    "react-chartjs": "^0.8.0",
+    "react-d3": "^0.4.0",
     "react-dom": "^15.3.1",
     "react-google-maps": "^4.11.0",
     "react-router": "^2.7.0"
