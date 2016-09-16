@@ -1,18 +1,15 @@
-// import fetch from 'node-fetch'
 import Moment from 'moment'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import fetch from 'fetch-jsonp'
-
-const now = Moment().add(1, 'hour').unix()
+import CSS from './styles.scss'
 const APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d'
 
-import CSS from './styles.scss'
 
+// See
+// http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
+// for details about this mapping
 export const convertToCardinal = degrees => {
-  // See
-  // http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
-  // for details about this mapping
   switch (true) {
     case ((degrees <= 11.25) || (degrees >= 348.75)):
       return 'N'
@@ -67,13 +64,14 @@ export const convertToCardinal = degrees => {
   }
 }
 
+
 export const ForecastDisplay = React.createClass({
   getInitialState() {
     const emptyDefault = {
-      city: '',
+      city: this.props.city,
       hourly: {
         summary: '',
-        icon: 'clear-day',
+        icon: 'default',
         temperature: 0,
         apparentTemperature: 0,
         humidity: 0,
@@ -92,12 +90,10 @@ export const ForecastDisplay = React.createClass({
     return emptyDefault
   },
 
-  fetchForecast(props) {
-    const defaultLocation = { lat: 45.5238681, lng: -122.66014759999999 }
-    const location = props.location ? props.location : defaultLocation
+  fetchForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
     const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ location.lat },${ location.lng }`
 
-    fetch(requestURL)
+    return fetch(requestURL)
       .then(response => response.json())
       .then(response => {
         return response
@@ -108,25 +104,39 @@ export const ForecastDisplay = React.createClass({
         minutely: results.minutely
       }))
       .then(results => {
-        this.setState(Object.assign({}, results, { city: props.city }))
+        this.setState(Object.assign({}, results, { city }))
         return results
       })
       .catch(error => console.error(error))
   },
 
+  componentDidMount() {
+    this.fetchForecast({
+      location: this.props.location,
+      city: this.props.city
+    })
+  },
+
   componentWillReceiveProps(newProps) {
-    this.fetchForecast(newProps)
+    console.log('receiving props:', newProps)
+    this.fetchForecast({
+      location: newProps.location,
+      city: newProps.city
+    })
+  },
+
+  getWeatherIcon(name) {
+    const req = require.context("babel!svg-react!./weather-icons", true)
+    return req(`./${name}.svg`)
   },
 
   render() {
     const { hourly, minutely } = this.state
-    const req = require.context("babel!svg-react!./weather-icons", true)
-    const Icon = req(`./${hourly.icon}.svg`)
-    console.log(hourly.icon)
-    console.log(CSS[hourly.icon])
-    return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated].join(' ') }>
+    const Icon = this.getWeatherIcon(hourly.icon)
+
+    return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ') }>
       <div className={ [CSS.heading, CSS.column].join(' ') }>
-        <h2>{ this.state.city }</h2>
+        <h2 className={ CSS.city }>{ this.state.city }</h2>
         <p>{ hourly.summary }</p>
         <Icon />
         <h1 className={ CSS.temp }>{ `${ hourly.temperature }℉` }</h1>
@@ -135,6 +145,7 @@ export const ForecastDisplay = React.createClass({
 
 
       <div className={ [CSS.line, CSS.column].join(' ') }>
+        {/* Not all international cities have up-to-the-minute weather summaries */}
         <p>Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
       </div>
 

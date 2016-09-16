@@ -51,6 +51,12 @@
   margin-top: 0;
 }
 
+.default {
+  background: white;
+  color: white;
+  fill: white;
+}
+
 .clear-day {
   background: #4E99C3;
   color: white;
@@ -65,8 +71,8 @@
 
 .cloudy, .fog, .partly-cloudy-day {
   background: #A7A398;
-  color: black;
-  fill: black;
+  color: white;
+  fill: white;
 }
 
 .rain, .sleet, .wind {
@@ -82,5 +88,14 @@
 }
 
 .animated {
-  transition: all 3s;
+  transition: all 2s;
+}
+
+.material {
+  box-shadow: 0px 1px 3px black;
+}
+
+.city {
+  text-align: center;
+  word-wrap: normal;
 }

@@ -1,7 +1,5 @@
-import StaticSiteGeneratorPlugin from 'static-site-generator-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-
 
 module.exports = {
   entry: {
@@ -16,7 +14,7 @@ module.exports = {
     loaders: [
       { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[emoji:5]!sass') },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[local]:[path]:[emoji:5]!sass') },
       { test: /\.otf$/, loader: 'url' },
       { test: /\.(png|jpg|jpeg)$/, loader: 'file' }
 
@@ -30,6 +28,4 @@ module.exports = {
       template: 'src/index.html'
     })
   ]
-    // new StaticSiteGeneratorPlugin('main', paths, null)
-  // ]
 }

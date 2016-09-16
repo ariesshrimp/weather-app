@@ -21,7 +21,7 @@ export const LocationField = React.createClass({
       <button type="submit" className={ CSS.button } onClick={ event => {
         event.preventDefault()
         this.props.onChange(this.refs.searchField.value)
-      }}>submit</button>
+      }}>search</button>
     </form>
   }
 })

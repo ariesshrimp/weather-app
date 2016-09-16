@@ -1,5 +1,7 @@
 import React from 'react'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
+import { triggerEvent } from 'react-google-maps/lib/utils'
+
 import { LocationField } from '../location-field/index.js'
 import { ForecastDisplay } from '../forecast-display/index.js'
 
@@ -8,21 +10,36 @@ const geocode = require('google-maps-api/geocode')
 import CSS from './styles.scss'
 
 export const Map = React.createClass({
+  componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize)
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
+  },
+
+  handleWindowResize(event) {
+    triggerEvent(this.map, 'resize')
+  },
+
   handleGoogleMapLoad(map) {
-    // console.log('map loaded')
+    this.map = map
+    return this.map
   },
 
   render() {
     return <GoogleMapLoader
-      containerElement={ <div style={ {height: `50vh`, width: `100%`} }/> }
+      containerElement={ <div style={ {height: `50vh`, width: `100%`, zIndex: '-999'} }/> }
       googleMapElement={
         <GoogleMap
           ref={ this.handleGoogleMapLoad }
           defaultZoom={ 11 }
           defaultCenter={ this.props.location }
           center={ this.props.location }
-        />}
-      />
+          >
+          <Marker position={ this.props.location }/>
+        </GoogleMap>
+      } />
   }
 })
 
@@ -33,9 +50,17 @@ export const ControlledMap = React.createClass({
   getInitialState() {
     const userLocation = JSON.parse(localStorage.getItem('location') )
     const userCity = localStorage.getItem('city')
+    console.log(userLocation)
+    console.log(userCity)
 
-    if (userLocation && userCity) return { location: userLocation, city: userCity }
-    else if (userLocation) return { location: userLocation, city: '' }
+    if (userLocation && userCity) {
+      console.log('both')
+      return { location: userLocation, city: userCity }
+    }
+    else if (userLocation) {
+      console.log('just one')
+      return { location: userLocation, city: '' }
+    }
     else {
       return {
         location: {lat: -34.397, lng: 150.644},
@@ -45,26 +70,35 @@ export const ControlledMap = React.createClass({
   },
 
   componentDidMount() {
-    // Ask the user if they want to use their current location
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude: lat, longitude: lng } = position.coords
-      const location = { lat, lng }
-      geocode({
-        location
-      }).then(place => {
-        const city = place[0].formatted_address.split(', ').slice(-3)[0]
+    console.log(this.state)
+    // Don't make them wait around forever if we've cached it already
+    if (!this.state.location) {
+      // Ask the user if they want to use their current location
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude: lat, longitude: lng } = position.coords
+        const location = { lat, lng }
+        geocode({
+          location
+        }).then(place => {
+          // Arbitrary string manipulation from the gmaps API response
+          const city = place[0].formatted_address.split(', ').slice(-3)[0]
 
-        // Cache it for return visits
-        localStorage.setItem('location', JSON.stringify(location))
-        localStorage.setItem('city', city)
+          // Cache it for return visits
+          localStorage.setItem('location', JSON.stringify(location))
+          localStorage.setItem('city', city)
 
-        // Update the state
-        this.setState({
-          location,
-          city
+          // Update the state
+          this.setState({
+            location,
+            city
+          })
         })
       })
-    })
+    }
+
+    else {
+      console.log('not fetching')
+    }
   },
 
   handleLocationUpdate(location) {
