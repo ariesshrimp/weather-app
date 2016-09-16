@@ -31741,7 +31741,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"searchField":"searchField-src-components-location-field--✍🏽👿🕊🙎🏼🇺","button":"button-src-components-location-field--🏞🌼🇻🇺📌🌚"};
+	module.exports = {"searchField":"searchField-src-components-location-field--🦀🔦🇨🇴🐢🐛","button":"button-src-components-location-field--🙌🏻👜😵📅🍒"};
 
 /***/ },
 /* 288 */,
@@ -37215,7 +37215,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-forecast-display--🔴📂🍮💶🇨🇴","columnStart":"columnStart-src-components-forecast-display--💇😉💎🇸🇾🚂","row":"row-src-components-forecast-display--💉🌈🙍🏾👷🏿🔳","line":"line-src-components-forecast-display--🤐🇪🇷🕕🕦👧🏿","smallCaps":"smallCaps-src-components-forecast-display--🙏🏻👍🏾🈹✌🏾😝","details":"details-src-components-forecast-display--🌺🕢🙋🏾😵🚸","heading":"heading-src-components-forecast-display--🈴💁🏿🇧🇱🐪🙅🏾","temp":"temp-src-components-forecast-display--👨‍👩‍👦‍👦💆🏽👉🏾😨🇯🇲","default":"default-src-components-forecast-display--😗🇫🇷🈶🇦🇪🔋","clear-day":"clear-day-src-components-forecast-display--🔍🇦🇩👈🏽🌡🎾","clear-night":"clear-night-src-components-forecast-display--🇴🤕🕘🙊👱🏻","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🐘👟🚴🏽👶🏼🖱","cloudy":"cloudy-src-components-forecast-display--🌕👇🏼💺🕵🏽💁🏾","fog":"fog-src-components-forecast-display--🇷🇸📈🇧🇦🛢🌝","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--🌧🇬🇵👈🏾👨🏼💆","rain":"rain-src-components-forecast-display--📒🇸🇲😧👸🏾🔶","sleet":"sleet-src-components-forecast-display--😍💂🏾😙🎅🏾🐕","wind":"wind-src-components-forecast-display--👷🎋🇧🇯🇧🇭🇬🇱","snow":"snow-src-components-forecast-display--🚣🏼👨‍❤️‍💋‍👨😱🛍🉐","animated":"animated-src-components-forecast-display--👦🏽🖖🏾👡💽🕵🏿","material":"material-src-components-forecast-display--🏋🇯🇪💙🇿💋","city":"city-src-components-forecast-display--😹🆒👴🏿🐩🚏"};
+	module.exports = {"column":"column-src-components-forecast-display--👵🏽🆙🌎🇸🇷🚎","columnStart":"columnStart-src-components-forecast-display--🕥🇦🇸🙆🏿🎯🗒","row":"row-src-components-forecast-display--🐳🇳🇪🏥👝🙋","line":"line-src-components-forecast-display--🤕🙏🏾🏃🏾🇭🇺🛤","smallCaps":"smallCaps-src-components-forecast-display--🇭🇷🎣🔻👌🏾🇰","details":"details-src-components-forecast-display--🐺👩‍👩‍👧‍👦🎥💈🈶","heading":"heading-src-components-forecast-display--🆖💅🆑🇦🇹🔨","temp":"temp-src-components-forecast-display--🙋🏼🌫🕗😺🇨🇽","default":"default-src-components-forecast-display--🚙🇸🇪🐏🚚🍏","clear-day":"clear-day-src-components-forecast-display--🍚🙌🏽💞🙅🏿🇮🇶","clear-night":"clear-night-src-components-forecast-display--💁🛣👸😂👧🏽","partly-cloudy-night":"partly-cloudy-night-src-components-forecast-display--🛡💹🚟🇨🇭🐄","cloudy":"cloudy-src-components-forecast-display--🐩☝🏼🚶🏼🇶🇦🐨","fog":"fog-src-components-forecast-display--🎟✍🏾🙍🏻🖖🏿🖐🏼","partly-cloudy-day":"partly-cloudy-day-src-components-forecast-display--🇰🇲🔃🎨👩🏽🇲🇺","rain":"rain-src-components-forecast-display--🇬🇵🇱🇺🔜🕊💆🏻","sleet":"sleet-src-components-forecast-display--📵🇧🇾🇬🇼🕵🏻💂🏻","wind":"wind-src-components-forecast-display--🕘🚣🏾💆🏾📳👨🏻","snow":"snow-src-components-forecast-display--🚵🏼💿🎼🚦🍨","animated":"animated-src-components-forecast-display--💛🚣🍄👉🙏🏻","material":"material-src-components-forecast-display--📌🏊🏿🔤👓😊","city":"city-src-components-forecast-display--🚨🇲🇫🍝🖇🐁"};
 
 /***/ },
 /* 306 */,
@@ -40987,67 +40987,26 @@
 	
 	module.exports = React.createClass({
 	
-	  displayName: "Default",
+	    displayName: "Default",
 	
-	  getDefaultProps: function getDefaultProps() {
-	    return { "x": "0px", "y": "0px", "width": "100px", "height": "100px", "viewBox": "0 0 100 100", "enableBackground": "new 0 0 100 100", "data-svgreactloader": "[[null,\"space\",\"preserve\"]]" };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    helpers.applyXmlAttributes(this);
-	  },
-	  render: function render() {
-	    var props = this.props;
-	    var children = props.children;
+	    getDefaultProps: function getDefaultProps() {
+	        return {};
+	    },
+	    componentDidMount: function componentDidMount() {
+	        helpers.applyXmlAttributes(this);
+	    },
+	    render: function render() {
+	        var props = this.props;
+	        var children = props.children;
 	
-	    return React.createElement(
-	      'svg',
-	      this.props,
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '48.999', y: '27.982', width: '2.001', height: '7.403' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '34.012', y: '35.773', transform: 'matrix(0.7071 0.7071 -0.7071 0.7071 37.0508 -15.8973)', width: '7.403', height: '2' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '61.285', y: '33.071', transform: 'matrix(0.7071 0.7071 -0.7071 0.7071 44.2448 -33.2719)', width: '2', height: '7.403' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '63.674', y: '49.059', width: '7.403', height: '2' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '28.924', y: '49.059', width: '7.402', height: '2' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '49', y: '64.615', width: '2.001', height: '7.402' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '58.585', y: '62.227', transform: 'matrix(-0.707 -0.7072 0.7072 -0.707 61.6125 151.9782)', width: '7.403', height: '2' })
-	      ),
-	      React.createElement(
-	        'g',
-	        null,
-	        React.createElement('rect', { x: '36.715', y: '59.526', transform: 'matrix(-0.7071 -0.7071 0.7071 -0.7071 19.6743 134.6054)', width: '2', height: '7.403' })
-	      ),
-	      React.createElement('path', { d: 'M62.294,50.01c0-0.027,0.004-0.054,0.004-0.081H62.29c-0.078-6.715-5.558-12.155-12.291-12.155s-12.212,5.44-12.29,12.155\r h-0.006c0,0.021,0.003,0.041,0.003,0.062c0,0.027-0.004,0.054-0.004,0.081h0.008c0.078,6.715,5.558,12.155,12.291,12.155\r s12.212-5.44,12.29-12.155h0.006C62.297,50.05,62.294,50.03,62.294,50.01z M50.001,60.227c-5.658,0-10.261-4.586-10.295-10.236\r c0.044-5.641,4.643-10.217,10.293-10.217c5.658,0,10.261,4.586,10.295,10.236C60.25,55.65,55.651,60.227,50.001,60.227z' }),
-	      React.Children.map(children, function (c) {
-	        return c;
-	      })
-	    );
-	  }
+	        return React.createElement(
+	            'svg',
+	            this.props,
+	            React.Children.map(children, function (c) {
+	                return c;
+	            })
+	        );
+	    }
 	});
 
 /***/ },
@@ -41359,7 +41318,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"container-src-components-map--👵🏼🏾📵🇸🇨🍎"};
+	module.exports = {"container":"container-src-components-map--🐮👰🏿👊🏿🇪🇺🌥"};
 
 /***/ },
 /* 430 */,
@@ -41367,7 +41326,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"column-src-components-home--👎🏽💍🐭🚴🏾🏕"};
+	module.exports = {"column":"column-src-components-home--🔸🛀🏾🇦🇼💐📰"};
 
 /***/ },
 /* 432 */,

@@ -3,8 +3,23 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import fetch from 'fetch-jsonp'
 import CSS from './styles.scss'
-const APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d'
 
+
+export const fetchForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city})  => {
+  const APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d'
+  const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ location.lat },${ location.lng }`
+
+  return fetch(requestURL)
+    .then(response => response.json())
+    .then(response => {
+      return response
+    })
+    .then(results => ({
+      timezone: results.timezone,
+      hourly: results.hourly.data[0],
+      minutely: results.minutely
+    }))
+}
 
 // See
 // http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
@@ -90,19 +105,8 @@ export const ForecastDisplay = React.createClass({
     return emptyDefault
   },
 
-  fetchForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
-    const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ location.lat },${ location.lng }`
-
-    return fetch(requestURL)
-      .then(response => response.json())
-      .then(response => {
-        return response
-      })
-      .then(results => ({
-        timezone: results.timezone,
-        hourly: results.hourly.data[0],
-        minutely: results.minutely
-      }))
+  updateForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
+    return fetchForecast({location, city})
       .then(results => {
         this.setState(Object.assign({}, results, { city }))
         return results
@@ -111,7 +115,7 @@ export const ForecastDisplay = React.createClass({
   },
 
   componentDidMount() {
-    this.fetchForecast({
+    this.updateForecast({
       location: this.props.location,
       city: this.props.city
     })
@@ -119,7 +123,7 @@ export const ForecastDisplay = React.createClass({
 
   componentWillReceiveProps(newProps) {
     console.log('receiving props:', newProps)
-    this.fetchForecast({
+    this.updateForecast({
       location: newProps.location,
       city: newProps.city
     })
@@ -145,7 +149,7 @@ export const ForecastDisplay = React.createClass({
 
 
       <div className={ [CSS.line, CSS.column].join(' ') }>
-        {/* Not all international cities have up-to-the-minute weather summaries */}
+        {/* UP TO THE MINUTE DATA GOESS HERE */}
         <p>Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
       </div>
 

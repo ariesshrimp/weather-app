@@ -8,6 +8,10 @@ export const LocationField = React.createClass({
     const autocomplete = new gmap.places.Autocomplete(this.refs.searchField)
     this.listener = autocomplete.addListener('place_changed', () => {
       let place = autocomplete.getPlace()
+
+      if (typeof place === 'string'){
+        this.props.onChange(place.formatted_address)
+      }
     })
   },
 
