@@ -14,7 +14,7 @@ module.exports = {
     loaders: [
       { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[local]:[path]:[emoji:5]!sass') },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[path]__***[local]***__[emoji:1]!sass') },
       { test: /\.otf$/, loader: 'url' },
       { test: /\.(png|jpg|jpeg)$/, loader: 'file' }
 

@@ -2,12 +2,15 @@ import Moment from 'moment'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSS from './styles.scss'
-import { PrecipGraph } from './precip-graph.js'
-import { convertToCardinal, fetchForecast, mockFetch, getWeatherIcon } from './utilities.js'
+import { PrecipGraph } from './chart.js'
+import { convertToCardinal, fetchForecast, getWeatherIcon } from './utilities.js'
 
 
 export const ForecastDisplay = React.createClass({
   getInitialState() {
+    /**
+    *   Serves as a nice litle API doc for the forecast.io response 🤖🏻
+    */
     const emptyDefault = {
       city: this.props.city,
       hourly: {
@@ -32,7 +35,9 @@ export const ForecastDisplay = React.createClass({
     return emptyDefault
   },
 
-  // A setState wrapper around the forecast.io fetch from ./utilities
+  /**
+  *    A setState wrapper around the forecast.io fetch from ./utilities
+  */
   updateForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
     return fetchForecast({location, city})
       .then(results => {

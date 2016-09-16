@@ -2,8 +2,8 @@ import React from 'react'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
 import { triggerEvent } from 'react-google-maps/lib/utils'
 
-import { LocationField } from '../location-field/index.js'
-import { ForecastDisplay } from '../forecast-display/index.js'
+import { LocationField } from '../LocationSearch/index.js'
+import { ForecastDisplay } from '../ForecastDisplay/index.js'
 
 const geocode = require('google-maps-api/geocode')
 
@@ -19,8 +19,9 @@ export const Map = React.createClass({
   },
 
   handleWindowResize(event) {
-    // doesn't seem to be working as expected...
+    // This doesn't seem to be working as expected...
     // see https://github.com/tomchentw/react-google-maps/issues/337
+    // current behavior is...nothing 😖
     triggerEvent(this.map, 'resize')
   },
 
@@ -68,7 +69,6 @@ export const ControlledMap = React.createClass({
   },
 
   componentDidMount() {
-    // Don't make them wait around forever if we've cached it already
     if (!this.state.location) {
       // Ask the user if they want to use their current location
       navigator.geolocation.getCurrentPosition(position => {
@@ -93,8 +93,11 @@ export const ControlledMap = React.createClass({
       })
     }
 
+    // Don't make them wait around forever if we've cached it already
+    // just skip it.
     else {
       console.log('not fetching')
+      return false
     }
   },
 
@@ -116,7 +119,7 @@ export const ControlledMap = React.createClass({
 
   render() {
     return <div className={ CSS.container }>
-      <LocationField onChange={ this.handleLocationUpdate }/>
+      <LocationField onChange={ this.handleLocationUpdate } mapInstance={ this.props.mapInstance }/>
       <ForecastDisplay location={ this.state.location } city={ this.state.city }/>
       <Map location={ this.state.location }/>
     </div>

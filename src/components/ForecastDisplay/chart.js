@@ -5,8 +5,15 @@ import { LineChart } from 'react-d3'
 import CSS from './styles.scss'
 
 export const PrecipGraph = props => {
+  /**
+  *   The forecast.io API doesn't have the same data available
+  *   for every possible location... 😡🏻
+  */
   if (!props.data.length) return null
 
+  /**
+  *   Reformat the data correctly for D3's preferences 💃🏻
+  */
   const values = props.data.map(data => {
     const minute = Moment.unix(data.time).minute()
     const percent = data.precipProbability * 100
@@ -14,8 +21,7 @@ export const PrecipGraph = props => {
   })
   const lineData = [{name: 'rain', values: values, strokeWidth: 1}]
 
-  return <div>
-    <LineChart
+  return <LineChart
       className={ CSS.chart }
       data={ lineData }
       circleRadius={ 0 }
@@ -32,5 +38,4 @@ export const PrecipGraph = props => {
       yAxisStrokeWidth={ '0' }
       strokeWidth={ 10 }
       />
-  </div>
 }
