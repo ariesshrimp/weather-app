@@ -1,6 +1,7 @@
 import React from 'react'
 const geocode = require('google-maps-api/geocode')
 
+import CSS from './styles.scss'
 
 export const LocationField = React.createClass({
   componentDidMount() {
@@ -16,11 +17,11 @@ export const LocationField = React.createClass({
 
   render() {
     return <form>
-      <input ref="searchField" role="search"></input>
-      <button type="submit" onClick={ event => {
-        this.props.onChange(this.refs.searchField.value)
+      <input ref="searchField" role="search" className={ CSS.searchField }></input>
+      <button type="submit" className={ CSS.button } onClick={ event => {
         event.preventDefault()
-      }}>Submit</button>
+        this.props.onChange(this.refs.searchField.value)
+      }}>submit</button>
     </form>
   }
 })

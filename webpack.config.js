@@ -1,16 +1,11 @@
 import StaticSiteGeneratorPlugin from 'static-site-generator-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-const paths = [
-  '/'
-]
 
 
 module.exports = {
-  target: 'node',
   entry: {
-    // main: './src/entry.js'
-    main: './src/components/forecast-display/index.js'
+    main: './src/entry.js'
   },
   output: {
     filename: 'index.js',
@@ -22,7 +17,9 @@ module.exports = {
       { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[emoji:5]!sass') },
-      { test: /\.(woff|otf|png)$/, loader: 'url' }
+      { test: /\.otf$/, loader: 'url' },
+      { test: /\.(png|jpg|jpeg)$/, loader: 'file' }
+
     ]
   },
   devtool: 'source-map',

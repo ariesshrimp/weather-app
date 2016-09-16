@@ -1,11 +1,11 @@
 import React from 'react'
 import { ControlledMap } from '../map/index.js'
 
+import CSS from './styles.scss'
+
 export const HomePage = React.createClass({
   render() {
-    // console.log('home')
-    return <section id="home">
-      <h1>Hello!</h1>
+    return <section className={ CSS.column }>
       <ControlledMap />
     </section>
   }

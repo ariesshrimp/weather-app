@@ -1,0 +1,86 @@
+.column {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.columnStart {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  border-top: 1px solid rgba(255,255,255,0.3);
+  width: 100%;
+  margin: 1em 0;
+}
+
+.smallCaps {
+  font-variant: small-caps;
+}
+
+.details p:nth-child(2n) {
+  margin-bottom: 1em;
+}
+
+.details {
+  padding-top: 1em;
+  p {
+    margin: 0.2em;
+  }
+}
+
+.heading {
+  * {
+    margin-bottom: 0;
+  }
+}
+
+.temp {
+  font-size: 3em;
+  margin-top: 0;
+}
+
+.clear-day {
+  background: #4E99C3;
+  color: white;
+  fill: white;
+}
+
+.clear-night, .partly-cloudy-night {
+  background: #0F0F17;
+  color: white;
+  fill: white;
+}
+
+.cloudy, .fog, .partly-cloudy-day {
+  background: #A7A398;
+  color: black;
+  fill: black;
+}
+
+.rain, .sleet, .wind {
+  background: #2B2F4C;
+  color: white;
+  fill: white;
+}
+
+.snow {
+  background: #4F5053;
+  color: black;
+  fill: black;
+}
+
+.animated {
+  transition: all 3s;
+}
