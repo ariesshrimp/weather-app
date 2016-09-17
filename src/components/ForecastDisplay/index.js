@@ -32,8 +32,10 @@ const emptyDefault = {
 }
 
 /**
-*    A setState wrapper around the forecast.io fetch from ./utilities
+*    A functional  wrapper around the forecast.io fetch from ./utilities
 *   It always defaults to Portland, arbitrarily
+*   It merges the result with default settings in case any fields
+*   are missing on the response
 */
 export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) => {
   return fetchForecast({location, city}).then(results => {
@@ -53,10 +55,22 @@ export const Heading = ({ hourly, timezone, city }) => {
   </div>
 }
 
-export const MinutelySection = ({ minutely }) => {
+export const DetailsMinutely = ({ minutely }) => {
   return <div className={ [CSS.line, CSS.column].join(' ') }>
     <PrecipGraph data={ minutely ? minutely.data : [] }/>
     <p className="summary">Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
+  </div>
+}
+
+export const DetailsHourly = ({ hourly }) => {
+  return <div className={ [CSS.line, CSS.column, CSS.details].join(' ') }>
+    <p>Chance of Rain: { `${ hourly.precipProbability * 100 }%` }</p>
+    <p>Humidity: { `${ Math.round(hourly.humidity * 100) }%` }</p>
+    <p>Wind: <span className={ CSS.smallCaps }>{ convertToCardinal(hourly.windBearing).toLowerCase() }</span>{ ` ${hourly.windSpeed} mph` }</p>
+    <p>Feels like: { `${hourly.apparentTemperature}℉` }</p>
+    <p>Precipitation: { `${ hourly.precipIntensity } in` }</p>
+    <p>Pressure: { `${ hourly.pressure } mb` }</p>
+    <p>Visibility: { `${ hourly.visibility } mi` }</p>
   </div>
 }
 
@@ -81,21 +95,11 @@ export const ForecastDisplay = React.createClass({
 
   render() {
     const { hourly, minutely, timezone } = this.state
-
-    return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ') }>
+    const styles = [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ')
+    return <section className={ styles }>
       <Heading city={ this.state.city } timezone={ timezone } hourly={ hourly }/>
-      <MinutelySection minutely={ minutely } />
-
-
-      <div className={ [CSS.line, CSS.column, CSS.details].join(' ') }>
-        <p>Chance of Rain: { `${ hourly.precipProbability * 100 }%` }</p>
-        <p>Humidity: { `${ Math.round(hourly.humidity * 100) }%` }</p>
-        <p>Wind: <span className={ CSS.smallCaps }>{ convertToCardinal(hourly.windBearing).toLowerCase() }</span>{ ` ${hourly.windSpeed} mph` }</p>
-        <p>Feels like: { `${hourly.apparentTemperature}℉` }</p>
-        <p>Precipitation: { `${ hourly.precipIntensity } in` }</p>
-        <p>Pressure: { `${ hourly.pressure } mb` }</p>
-        <p>Visibility: { `${ hourly.visibility } mi` }</p>
-      </div>
+      <DetailsMinutely minutely={ minutely } />
+      <DetailsHourly hourly={ hourly }/>
     </section>
   }
 })
