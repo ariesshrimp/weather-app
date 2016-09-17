@@ -1,46 +1,49 @@
 import Moment from 'moment'
+import { tz } from 'moment-timezone'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSS from './styles.scss'
 import { PrecipGraph } from './chart.js'
 import { convertToCardinal, fetchForecast, getWeatherIcon } from './utilities.js'
 
+/**
+*   Serves as a nice litle API doc for the forecast.io response 🤖🏻
+*/
+const emptyDefault = {
+  city: '',
+  timezone: '',
+  hourly: {
+    summary: '',
+    icon: 'default',
+    temperature: 0,
+    apparentTemperature: 0,
+    humidity: 0,
+    windSpeed: 0,
+    windBearing: 0,
+    precipProbability: 0,
+    precipIntensity: 0,
+    pressure: 0,
+    visibility: 0
+  },
+  minutely: {
+    summary: '',
+    data: []
+  }
+}
 
 export const ForecastDisplay = React.createClass({
   getInitialState() {
-    /**
-    *   Serves as a nice litle API doc for the forecast.io response 🤖🏻
-    */
-    const emptyDefault = {
-      city: this.props.city,
-      hourly: {
-        summary: '',
-        icon: 'default',
-        temperature: 0,
-        apparentTemperature: 0,
-        humidity: 0,
-        windSpeed: 0,
-        windBearing: 0,
-        precipProbability: 0,
-        precipIntensity: 0,
-        pressure: 0,
-        visibility: 0
-      },
-      minutely: {
-        summary: '',
-        data: []
-      }
-    }
-
-    return emptyDefault
+    return Object.assign({}, emptyDefault, {city: this.props.city})
   },
 
   /**
   *    A setState wrapper around the forecast.io fetch from ./utilities
+  *   It always defaults to Portland, arbitrarily
   */
   updateForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
     return fetchForecast({location, city})
       .then(results => {
+        console.log(results)
         this.setState(Object.assign({}, results, { city }))
         return results
       })
@@ -62,7 +65,7 @@ export const ForecastDisplay = React.createClass({
   },
 
   render() {
-    const { hourly, minutely } = this.state
+    const { hourly, minutely, timezone } = this.state
     const Icon = getWeatherIcon(hourly.icon)
 
     return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ') }>
@@ -71,13 +74,13 @@ export const ForecastDisplay = React.createClass({
         <p>{ hourly.summary }</p>
         <Icon />
         <h1 className={ CSS.temp }>{ `${ hourly.temperature }℉` }</h1>
-        <p>{ Moment().format('dddd h:mma') }</p>
+        <p>{ timezone ? tz(timezone).format('dddd h:mma') : Moment().format('dddd h:mma') }</p>
       </div>
 
 
       <div className={ [CSS.line, CSS.column].join(' ') }>
-        <PrecipGraph data={ minutely.data }/>
-        <p>Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
+        <PrecipGraph data={ minutely ? minutely.data : [] }/>
+        <p className="summary">Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
       </div>
 
 

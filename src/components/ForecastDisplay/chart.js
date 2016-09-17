@@ -14,10 +14,9 @@ export const PrecipGraph = props => {
   /**
   *   Reformat the data correctly for D3's preferences 💃🏻
   */
-  const values = props.data.map(data => {
-    const minute = Moment.unix(data.time).minute()
+  const values = props.data.map((data, index) => {
     const percent = data.precipProbability * 100
-    return { x: minute, y: percent }
+    return { x: index, y: percent }
   })
   const lineData = [{name: 'rain', values: values, strokeWidth: 1}]
 
@@ -31,7 +30,7 @@ export const PrecipGraph = props => {
         width: 800,
         height: 400
       }}
-      title="Chance of Rain"
+      title="% Chance of Rain"
       xAxisLabel="time this hour"
       xAxisLabelOffset={ 60 }
       domain={{x: [0,60], y: [0,100]}}
