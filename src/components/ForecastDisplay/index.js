@@ -31,51 +31,54 @@ const emptyDefault = {
   }
 }
 
+/**
+*    A setState wrapper around the forecast.io fetch from ./utilities
+*   It always defaults to Portland, arbitrarily
+*/
+export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) => {
+  return fetchForecast({location, city}).then(results => {
+    return Object.assign({}, emptyDefault, results, { city })
+  })
+}
+
+export const Heading = ({ hourly, timezone, city }) => {
+  const Icon = getWeatherIcon(hourly.icon)
+
+  return <div className={ [CSS.heading, CSS.column].join(' ') }>
+    <h2 className={ CSS.city }>{ city }</h2>
+    <p>{ hourly.summary }</p>
+    <Icon />
+    <h1 className={ CSS.temp }>{ `${ hourly.temperature }℉` }</h1>
+    <p>{ timezone ? tz(timezone).format('dddd h:mma') : Moment().format('dddd h:mma') }</p>
+  </div>
+}
+
+
+
 export const ForecastDisplay = React.createClass({
   getInitialState() {
     return Object.assign({}, emptyDefault, {city: this.props.city})
   },
 
-  /**
-  *    A setState wrapper around the forecast.io fetch from ./utilities
-  *   It always defaults to Portland, arbitrarily
-  */
-  updateForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
-    return fetchForecast({location, city})
-      .then(results => {
-        this.setState(Object.assign({}, results, { city }))
-        return results
-      })
-      .catch(error => console.error(error))
-  },
-
   componentDidMount() {
-    this.updateForecast({
+    updateForecast({
       location: this.props.location,
       city: this.props.city
-    })
+    }).then(results => this.setState(results))
   },
 
   componentWillReceiveProps(newProps) {
-    this.updateForecast({
+    updateForecast({
       location: newProps.location,
       city: newProps.city
-    })
+    }).then(results => this.setState(results))
   },
 
   render() {
     const { hourly, minutely, timezone } = this.state
-    const Icon = getWeatherIcon(hourly.icon)
 
     return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ') }>
-      <div className={ [CSS.heading, CSS.column].join(' ') }>
-        <h2 className={ CSS.city }>{ this.state.city }</h2>
-        <p>{ hourly.summary }</p>
-        <Icon />
-        <h1 className={ CSS.temp }>{ `${ hourly.temperature }℉` }</h1>
-        <p>{ timezone ? tz(timezone).format('dddd h:mma') : Moment().format('dddd h:mma') }</p>
-      </div>
-
+      <Heading city={ this.state.city } timezone={ timezone } hourly={ hourly }/>
 
       <div className={ [CSS.line, CSS.column].join(' ') }>
         <PrecipGraph data={ minutely ? minutely.data : [] }/>

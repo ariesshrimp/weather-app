@@ -21590,7 +21590,6 @@
 	        }).then(function (place) {
 	          // Arbitrary string manipulation from the gmaps API response
 	          var city = place[0].formatted_address.split(', ').slice(-3)[0];
-
 	          // Cache it for return visits
 	          localStorage.setItem('location', JSON.stringify(location));
 	          localStorage.setItem('city', city);
@@ -21607,7 +21606,7 @@
 	    // Don't make them wait around forever if we've cached it already
 	    // just skip it.
 	    else {
-	        console.log('not fetching');
+	        console.log('not fetching', this.state);
 	        return false;
 	      }
 	  },
@@ -26117,7 +26116,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"src-components-LocationSearch-__---container---__☝🏻","searchField":"src-components-LocationSearch-__---searchField---__👮","button":"src-components-LocationSearch-__---button---__👔"};
+	module.exports = {"container":"src-components-LocationSearch-__---container---__📴","searchField":"src-components-LocationSearch-__---searchField---__🇸🇴","button":"src-components-LocationSearch-__---button---__👒"};
 
 /***/ },
 /* 224 */,
@@ -27035,7 +27034,6 @@
 	    var city = _ref.city;
 
 	    return (0, _utilities.fetchForecast)({ location: location, city: city }).then(function (results) {
-	      console.log(results);
 	      _this.setState(Object.assign({}, results, { city: city }));
 	      return results;
 	    }).catch(function (error) {
@@ -32632,7 +32630,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"src-components-ForecastDisplay-__---column---__😣","columnStart":"src-components-ForecastDisplay-__---columnStart---__🅰","row":"src-components-ForecastDisplay-__---row---__🛎","scrolling":"src-components-ForecastDisplay-__---scrolling---__🇱🇰","line":"src-components-ForecastDisplay-__---line---__🍞","smallCaps":"src-components-ForecastDisplay-__---smallCaps---__👽","details":"src-components-ForecastDisplay-__---details---__🔀","heading":"src-components-ForecastDisplay-__---heading---__💜","temp":"src-components-ForecastDisplay-__---temp---__💰","default":"src-components-ForecastDisplay-__---default---__🌯","clear-day":"src-components-ForecastDisplay-__---clear-day---__💁","clear-night":"src-components-ForecastDisplay-__---clear-night---__🚖","partly-cloudy-night":"src-components-ForecastDisplay-__---partly-cloudy-night---__🌈","cloudy":"src-components-ForecastDisplay-__---cloudy---__🚲","fog":"src-components-ForecastDisplay-__---fog---__🙅🏼","partly-cloudy-day":"src-components-ForecastDisplay-__---partly-cloudy-day---__🍚","rain":"src-components-ForecastDisplay-__---rain---__🚈","sleet":"src-components-ForecastDisplay-__---sleet---__🇵","wind":"src-components-ForecastDisplay-__---wind---__🇵🇫","snow":"src-components-ForecastDisplay-__---snow---__🍣","animated":"src-components-ForecastDisplay-__---animated---__📻","material":"src-components-ForecastDisplay-__---material---__🐩","city":"src-components-ForecastDisplay-__---city---__🚒"};
+	module.exports = {"column":"src-components-ForecastDisplay-__---column---__🇸🇪","columnStart":"src-components-ForecastDisplay-__---columnStart---__👾","row":"src-components-ForecastDisplay-__---row---__👼🏻","scrolling":"src-components-ForecastDisplay-__---scrolling---__😗","line":"src-components-ForecastDisplay-__---line---__🐳","smallCaps":"src-components-ForecastDisplay-__---smallCaps---__🍘","details":"src-components-ForecastDisplay-__---details---__🇵🇳","heading":"src-components-ForecastDisplay-__---heading---__👴","temp":"src-components-ForecastDisplay-__---temp---__🇻🇪","default":"src-components-ForecastDisplay-__---default---__🍫","clear-day":"src-components-ForecastDisplay-__---clear-day---__🇪🇦","clear-night":"src-components-ForecastDisplay-__---clear-night---__🖨","partly-cloudy-night":"src-components-ForecastDisplay-__---partly-cloudy-night---__😸","cloudy":"src-components-ForecastDisplay-__---cloudy---__🚵🏻","fog":"src-components-ForecastDisplay-__---fog---__🇬🇳","partly-cloudy-day":"src-components-ForecastDisplay-__---partly-cloudy-day---__🏇🏼","rain":"src-components-ForecastDisplay-__---rain---__🍞","sleet":"src-components-ForecastDisplay-__---sleet---__🇹🇷","wind":"src-components-ForecastDisplay-__---wind---__🏂🏽","snow":"src-components-ForecastDisplay-__---snow---__🇾🇪","animated":"src-components-ForecastDisplay-__---animated---__🏃🏽","material":"src-components-ForecastDisplay-__---material---__🛳","city":"src-components-ForecastDisplay-__---city---__👼🏽"};
 
 /***/ },
 /* 244 */,
@@ -32685,7 +32683,7 @@
 	    viewBoxObject: {
 	      x: 0,
 	      y: 0,
-	      width: 800,
+	      width: 600,
 	      height: 400
 	    },
 	    title: '% Chance of Rain',
@@ -50448,7 +50446,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"src-components-Map-__---container---__🚣","mapContainer":"src-components-Map-__---mapContainer---__🔝"};
+	module.exports = {"container":"src-components-Map-__---container---__🐵","mapContainer":"src-components-Map-__---mapContainer---__👳🏾"};
 
 /***/ },
 /* 427 */,
@@ -50456,7 +50454,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"src-components-__---column---__🇦🇼"};
+	module.exports = {"column":"src-components-__---column---__👃"};
 
 /***/ },
 /* 429 */,
