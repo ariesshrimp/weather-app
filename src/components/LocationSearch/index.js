@@ -36,7 +36,7 @@ export const LocationField = React.createClass({
   },
 
   render() {
-    return <div>
+    return <div className={ CSS.container }>
       <input
         ref="searchField"
         role="search"

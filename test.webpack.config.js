@@ -1,4 +1,3 @@
-'use strict'
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const nodeExternals = require('webpack-node-externals')
@@ -43,7 +42,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       title: 'Unit Tests'
     }),
-    
+
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3001,

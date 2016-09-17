@@ -18,7 +18,6 @@ const baseConfig = {
       { test: /\.otf$/, loader: 'url' }
     ]
   },
-  devtool: 'source-map',
   plugins: [
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
