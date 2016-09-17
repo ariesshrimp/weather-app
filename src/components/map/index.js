@@ -79,7 +79,6 @@ export const ControlledMap = React.createClass({
         }).then(place => {
           // Arbitrary string manipulation from the gmaps API response
           const city = place[0].formatted_address.split(', ').slice(-3)[0]
-
           // Cache it for return visits
           localStorage.setItem('location', JSON.stringify(location))
           localStorage.setItem('city', city)
@@ -96,7 +95,7 @@ export const ControlledMap = React.createClass({
     // Don't make them wait around forever if we've cached it already
     // just skip it.
     else {
-      console.log('not fetching')
+      console.log('not fetching', this.state)
       return false
     }
   },

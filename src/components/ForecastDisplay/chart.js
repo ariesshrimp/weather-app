@@ -27,7 +27,7 @@ export const PrecipGraph = props => {
       viewBoxObject={{
         x: 0,
         y: 0,
-        width: 800,
+        width: 600,
         height: 400
       }}
       title="% Chance of Rain"

@@ -43,7 +43,6 @@ export const ForecastDisplay = React.createClass({
   updateForecast({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) {
     return fetchForecast({location, city})
       .then(results => {
-        console.log(results)
         this.setState(Object.assign({}, results, { city }))
         return results
       })
