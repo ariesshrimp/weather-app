@@ -14,7 +14,7 @@ const baseConfig = {
     loaders: [
       { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[path]__***[local]***__[emoji:1]!sass') },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[path]__***[local]***__[emoji:1]!postcss!sass') },
       { test: /\.otf$/, loader: 'url' }
     ]
   },
@@ -25,7 +25,10 @@ const baseConfig = {
       filename: 'index.html',
       template: 'src/index.html'
     })
-  ]
+  ],
+  postcss: function () {
+    return [require('postcss-cssnext')]
+  }
 }
 
 module.exports = baseConfig
