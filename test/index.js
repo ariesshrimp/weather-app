@@ -16,4 +16,4 @@ else {
 // using `require` rather than `import` thanks to a babel
 // bug which renders side-effect only imports in random order
 const tests = require.context('./components', true, /test/)
-tests.keys().forEach(test => tests(test))
+tests.keys().forEach(tests)

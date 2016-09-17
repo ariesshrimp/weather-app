@@ -1,14 +1,13 @@
 'use strict'
-import BrowserSyncPlugin from 'browser-sync-webpack-plugin'
-import HTMLWebpackPlugin from 'html-webpack-plugin'
-import nodeExternals from 'webpack-node-externals'
-import path from 'path'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import webpack from 'webpack'
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
+const nodeExternals = require('webpack-node-externals')
+const path = require('path')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const webpack = require('webpack')
 
-// Core configuration options for different build methods
 module.exports = {
-  devtool: 'source-maps',
+  devtool: 'inline-source-map',
   entry: 'mocha!./test/index.js',
   output: {
     path: 'test/compiled',
@@ -44,13 +43,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       title: 'Unit Tests'
     }),
-
-    // XXX:jmf
-    // Using this to avoid webpack-dev-server keeping the watch
-    // process alive too long.
-    // A convenient upshot is that we get scroll sync across clients.
-    // Options taken from here:
-    // https://www.npmjs.com/package/browser-sync-webpack-plugin
+    
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3001,
