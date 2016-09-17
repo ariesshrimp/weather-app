@@ -1,7 +1,7 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
-module.exports = {
+const baseConfig = {
   entry: {
     main: './src/entry.js'
   },
@@ -15,9 +15,7 @@ module.exports = {
       { test: /\.jsx?$/, loader: 'babel', exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css-loader?modules&importLoaders=1&localIdentName=[path]__***[local]***__[emoji:1]!sass') },
-      { test: /\.otf$/, loader: 'url' },
-      { test: /\.(png|jpg|jpeg)$/, loader: 'file' }
-
+      { test: /\.otf$/, loader: 'url' }
     ]
   },
   devtool: 'source-map',
@@ -29,3 +27,5 @@ module.exports = {
     })
   ]
 }
+
+module.exports = baseConfig

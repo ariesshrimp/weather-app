@@ -112,7 +112,7 @@ export const ControlledMap = React.createClass({
       // Update the state
       this.setState({
         location: loc,
-        city: coordinates[0].formatted_address
+        city: coordinates[0].formatted_address.split(', ').slice(-3)[0]
       })
     })
   },

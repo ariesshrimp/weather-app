@@ -1,28 +1,23 @@
 import fetch from 'fetch-jsonp'
 
 export const getWeatherIcon = name => {
-  const req = require.context("babel!svg-react!./weather-icons", true)
+  const req = require.context('babel!svg-react!./weather-icons', true)
   return req(`./${name}.svg`)
 }
 
-
-export const mockFetch = data => {
-  return {
-    timezone: data.timezone,
-    hourly: data.hourly.data[0],
-    minutely: data.minutely
-  }
-}
-
-
-export const fetchForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city})  => {
+/*
+*  You can use a standard fetch outside of a CORS protected environment
+*  but I'm passing a fetch implementation in here for isomorphic use
+*  This should be updated to hit lambda either way instead
+*/
+const defaultParams = {location: { lat: 45.5238681, lng: -122.66014759999999 }}
+export const fetchForecast = (props=defaultParams)  => {
+  const {lat, lng} = props.location
   const APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d'
-  const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ location.lat },${ location.lng }`
-
+  const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ lat },${ lng }`
   return fetch(requestURL)
     .then(response => response.json())
     .then(results => {
-      console.log(results)
       return {
         timezone: results.timezone,
         hourly: results.hourly.data[0],
@@ -35,6 +30,7 @@ export const fetchForecast = ({location={ lat: 45.5238681, lng: -122.66014759999
 // http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
 // for details about this mapping
 export const convertToCardinal = degrees => {
+  if (degrees > 360 || degrees < 0) throw new Error('currently does not convert degrees outside 0-360')
   switch (true) {
     case ((degrees <= 11.25) || (degrees >= 348.75)):
       return 'N'

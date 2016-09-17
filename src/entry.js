@@ -5,14 +5,15 @@ const gmaps = require('google-maps-api')('AIzaSyDAA7ZvT8YQXSKoFNu9NwvlFeuS4M649Q
 import { Root } from './components/root.js'
 import BaseStyles from './styles/base.scss'
 
-/** Render statement is wrapped here while we wait for GoogleMaps to
+/**
+*   Render statement is wrapped here while we wait for GoogleMaps to
 *   initialize.
 */
 gmaps().then(map => {
   /** Uncomment this line to inject your mapInstance into the global space.
   *   Seems bad, but all of the net's examples do it, and
-  *   We have obscured googlemaps dependencies anyway because
-  *   maptile modules are all async and weird.
+  *   we require obscured googlemaps dependencies anyway because
+  *   maptile modules are all async and crazy 🙀
   */
   // window.gmap = map
 
