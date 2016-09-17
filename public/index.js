@@ -26116,7 +26116,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"src-components-LocationSearch-__---container---__📴","searchField":"src-components-LocationSearch-__---searchField---__🇸🇴","button":"src-components-LocationSearch-__---button---__👒"};
+	module.exports = {"container":"src-components-LocationSearch-__---container---__🗑","searchField":"src-components-LocationSearch-__---searchField---__🏵","button":"src-components-LocationSearch-__---button---__🇸🇱"};
 
 /***/ },
 /* 224 */,
@@ -26964,7 +26964,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.ForecastDisplay = undefined;
+	exports.ForecastDisplay = exports.DetailsHourly = exports.DetailsMinutely = exports.Heading = exports.updateForecast = undefined;
 
 	var _moment = __webpack_require__(238);
 
@@ -27015,41 +27015,151 @@
 	  }
 	};
 
+	/**
+	*    A functional  wrapper around the forecast.io fetch from ./utilities
+	*   It always defaults to Portland, arbitrarily
+	*   It merges the result with default settings in case any fields
+	*   are missing on the response
+	*/
+	var updateForecast = exports.updateForecast = function updateForecast(_ref) {
+	  var _ref$location = _ref.location;
+	  var location = _ref$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref$location;
+	  var city = _ref.city;
+
+	  return (0, _utilities.fetchForecast)({ location: location, city: city }).then(function (results) {
+	    return Object.assign({}, emptyDefault, results, { city: city });
+	  });
+	};
+
+	var Heading = exports.Heading = function Heading(_ref2) {
+	  var hourly = _ref2.hourly;
+	  var timezone = _ref2.timezone;
+	  var city = _ref2.city;
+
+	  var Icon = (0, _utilities.getWeatherIcon)(hourly.icon);
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: [_styles2.default.heading, _styles2.default.column].join(' ') },
+	    _react2.default.createElement(
+	      'h2',
+	      { className: _styles2.default.city },
+	      city
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      hourly.summary
+	    ),
+	    _react2.default.createElement(Icon, null),
+	    _react2.default.createElement(
+	      'h1',
+	      { className: _styles2.default.temp },
+	      hourly.temperature + '℉'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      timezone ? (0, _momentTimezone.tz)(timezone).format('dddd h:mma') : (0, _moment2.default)().format('dddd h:mma')
+	    )
+	  );
+	};
+
+	var DetailsMinutely = exports.DetailsMinutely = function DetailsMinutely(_ref3) {
+	  var minutely = _ref3.minutely;
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: [_styles2.default.line, _styles2.default.column].join(' ') },
+	    _react2.default.createElement(_chart.PrecipGraph, { data: minutely ? minutely.data : [] }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'summary' },
+	      'Current forecast: ',
+	      minutely ? minutely.summary : 'Unknown'
+	    )
+	  );
+	};
+
+	var DetailsHourly = exports.DetailsHourly = function DetailsHourly(_ref4) {
+	  var hourly = _ref4.hourly;
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: [_styles2.default.line, _styles2.default.column, _styles2.default.details].join(' ') },
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Chance of Rain: ',
+	      hourly.precipProbability * 100 + '%'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Humidity: ',
+	      Math.round(hourly.humidity * 100) + '%'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Wind: ',
+	      _react2.default.createElement(
+	        'span',
+	        { className: _styles2.default.smallCaps },
+	        (0, _utilities.convertToCardinal)(hourly.windBearing).toLowerCase()
+	      ),
+	      ' ' + hourly.windSpeed + ' mph'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Feels like: ',
+	      hourly.apparentTemperature + '℉'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Precipitation: ',
+	      hourly.precipIntensity + ' in'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Pressure: ',
+	      hourly.pressure + ' mb'
+	    ),
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      'Visibility: ',
+	      hourly.visibility + ' mi'
+	    )
+	  );
+	};
+
 	var ForecastDisplay = exports.ForecastDisplay = _react2.default.createClass({
 	  displayName: 'ForecastDisplay',
 	  getInitialState: function getInitialState() {
 	    return Object.assign({}, emptyDefault, { city: this.props.city });
 	  },
-
-
-	  /**
-	  *    A setState wrapper around the forecast.io fetch from ./utilities
-	  *   It always defaults to Portland, arbitrarily
-	  */
-	  updateForecast: function updateForecast(_ref) {
+	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
-	    var _ref$location = _ref.location;
-	    var location = _ref$location === undefined ? { lat: 45.5238681, lng: -122.66014759999999 } : _ref$location;
-	    var city = _ref.city;
-
-	    return (0, _utilities.fetchForecast)({ location: location, city: city }).then(function (results) {
-	      _this.setState(Object.assign({}, results, { city: city }));
-	      return results;
-	    }).catch(function (error) {
-	      return console.error(error);
-	    });
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.updateForecast({
+	    updateForecast({
 	      location: this.props.location,
 	      city: this.props.city
+	    }).then(function (results) {
+	      return _this.setState(results);
 	    });
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	    this.updateForecast({
+	    var _this2 = this;
+
+	    updateForecast({
 	      location: newProps.location,
 	      city: newProps.city
+	    }).then(function (results) {
+	      return _this2.setState(results);
 	    });
 	  },
 	  render: function render() {
@@ -27058,98 +27168,13 @@
 	    var minutely = _state.minutely;
 	    var timezone = _state.timezone;
 
-	    var Icon = (0, _utilities.getWeatherIcon)(hourly.icon);
-
+	    var styles = [_styles2.default.column, _styles2.default[hourly.icon], _styles2.default.animated, _styles2.default.material].join(' ');
 	    return _react2.default.createElement(
 	      'section',
-	      { className: [_styles2.default.column, _styles2.default[hourly.icon], _styles2.default.animated, _styles2.default.material].join(' ') },
-	      _react2.default.createElement(
-	        'div',
-	        { className: [_styles2.default.heading, _styles2.default.column].join(' ') },
-	        _react2.default.createElement(
-	          'h2',
-	          { className: _styles2.default.city },
-	          this.state.city
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          hourly.summary
-	        ),
-	        _react2.default.createElement(Icon, null),
-	        _react2.default.createElement(
-	          'h1',
-	          { className: _styles2.default.temp },
-	          hourly.temperature + '℉'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          timezone ? (0, _momentTimezone.tz)(timezone).format('dddd h:mma') : (0, _moment2.default)().format('dddd h:mma')
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: [_styles2.default.line, _styles2.default.column].join(' ') },
-	        _react2.default.createElement(_chart.PrecipGraph, { data: minutely ? minutely.data : [] }),
-	        _react2.default.createElement(
-	          'p',
-	          { className: 'summary' },
-	          'Current forecast: ',
-	          minutely ? minutely.summary : 'Unknown'
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: [_styles2.default.line, _styles2.default.column, _styles2.default.details].join(' ') },
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Chance of Rain: ',
-	          hourly.precipProbability * 100 + '%'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Humidity: ',
-	          Math.round(hourly.humidity * 100) + '%'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Wind: ',
-	          _react2.default.createElement(
-	            'span',
-	            { className: _styles2.default.smallCaps },
-	            (0, _utilities.convertToCardinal)(hourly.windBearing).toLowerCase()
-	          ),
-	          ' ' + hourly.windSpeed + ' mph'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Feels like: ',
-	          hourly.apparentTemperature + '℉'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Precipitation: ',
-	          hourly.precipIntensity + ' in'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Pressure: ',
-	          hourly.pressure + ' mb'
-	        ),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          'Visibility: ',
-	          hourly.visibility + ' mi'
-	        )
-	      )
+	      { className: styles },
+	      _react2.default.createElement(Heading, { city: this.state.city, timezone: timezone, hourly: hourly }),
+	      _react2.default.createElement(DetailsMinutely, { minutely: minutely }),
+	      _react2.default.createElement(DetailsHourly, { hourly: hourly })
 	    );
 	  }
 	});
@@ -32630,7 +32655,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"src-components-ForecastDisplay-__---column---__🇸🇪","columnStart":"src-components-ForecastDisplay-__---columnStart---__👾","row":"src-components-ForecastDisplay-__---row---__👼🏻","scrolling":"src-components-ForecastDisplay-__---scrolling---__😗","line":"src-components-ForecastDisplay-__---line---__🐳","smallCaps":"src-components-ForecastDisplay-__---smallCaps---__🍘","details":"src-components-ForecastDisplay-__---details---__🇵🇳","heading":"src-components-ForecastDisplay-__---heading---__👴","temp":"src-components-ForecastDisplay-__---temp---__🇻🇪","default":"src-components-ForecastDisplay-__---default---__🍫","clear-day":"src-components-ForecastDisplay-__---clear-day---__🇪🇦","clear-night":"src-components-ForecastDisplay-__---clear-night---__🖨","partly-cloudy-night":"src-components-ForecastDisplay-__---partly-cloudy-night---__😸","cloudy":"src-components-ForecastDisplay-__---cloudy---__🚵🏻","fog":"src-components-ForecastDisplay-__---fog---__🇬🇳","partly-cloudy-day":"src-components-ForecastDisplay-__---partly-cloudy-day---__🏇🏼","rain":"src-components-ForecastDisplay-__---rain---__🍞","sleet":"src-components-ForecastDisplay-__---sleet---__🇹🇷","wind":"src-components-ForecastDisplay-__---wind---__🏂🏽","snow":"src-components-ForecastDisplay-__---snow---__🇾🇪","animated":"src-components-ForecastDisplay-__---animated---__🏃🏽","material":"src-components-ForecastDisplay-__---material---__🛳","city":"src-components-ForecastDisplay-__---city---__👼🏽"};
+	module.exports = {"column":"src-components-ForecastDisplay-__---column---__🏧","columnStart":"src-components-ForecastDisplay-__---columnStart---__📿","row":"src-components-ForecastDisplay-__---row---__📜","scrolling":"src-components-ForecastDisplay-__---scrolling---__🤕","line":"src-components-ForecastDisplay-__---line---__😾","smallCaps":"src-components-ForecastDisplay-__---smallCaps---__🔲","details":"src-components-ForecastDisplay-__---details---__🏯","heading":"src-components-ForecastDisplay-__---heading---__🏋🏻","temp":"src-components-ForecastDisplay-__---temp---__🏇","default":"src-components-ForecastDisplay-__---default---__🚶🏼","clear-day":"src-components-ForecastDisplay-__---clear-day---__👦","clear-night":"src-components-ForecastDisplay-__---clear-night---__🎰","partly-cloudy-night":"src-components-ForecastDisplay-__---partly-cloudy-night---__⛹🏼","cloudy":"src-components-ForecastDisplay-__---cloudy---__🏭","fog":"src-components-ForecastDisplay-__---fog---__💁🏻","partly-cloudy-day":"src-components-ForecastDisplay-__---partly-cloudy-day---__🇫🇰","rain":"src-components-ForecastDisplay-__---rain---__😙","sleet":"src-components-ForecastDisplay-__---sleet---__🏄🏽","wind":"src-components-ForecastDisplay-__---wind---__👤","snow":"src-components-ForecastDisplay-__---snow---__🌡","animated":"src-components-ForecastDisplay-__---animated---__🇦🇿","material":"src-components-ForecastDisplay-__---material---__🏫","city":"src-components-ForecastDisplay-__---city---__🇺🇲"};
 
 /***/ },
 /* 244 */,
@@ -50446,7 +50471,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"container":"src-components-Map-__---container---__🐵","mapContainer":"src-components-Map-__---mapContainer---__👳🏾"};
+	module.exports = {"container":"src-components-Map-__---container---__🇻🇺","mapContainer":"src-components-Map-__---mapContainer---__👏🏾"};
 
 /***/ },
 /* 427 */,
@@ -50454,7 +50479,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"column":"src-components-__---column---__👃"};
+	module.exports = {"column":"src-components-__---column---__📅"};
 
 /***/ },
 /* 429 */,

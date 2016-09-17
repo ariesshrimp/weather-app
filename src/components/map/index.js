@@ -1,6 +1,6 @@
 import React from 'react'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
-import { triggerEvent } from 'react-google-maps/lib/utils'
+// import { triggerEvent } from 'react-google-maps/lib/utils'
 
 import { LocationField } from '../LocationSearch/index.js'
 import { ForecastDisplay } from '../ForecastDisplay/index.js'
@@ -35,7 +35,7 @@ export const Map = React.createClass({
       containerElement={ <div className={ CSS.mapContainer }/> }
       googleMapElement={
         <GoogleMap
-          ref={ this.handleGoogleMapLoad }
+          ref={ map => this.map = map }
           defaultZoom={ 11 }
           defaultCenter={ this.props.location }
           center={ this.props.location }

@@ -64,7 +64,7 @@ export const DetailsMinutely = ({ minutely }) => {
 
 export const DetailsHourly = ({ hourly }) => {
   return <div className={ [CSS.line, CSS.column, CSS.details].join(' ') }>
-    <p>Chance of Rain: { `${ hourly.precipProbability * 100 }%` }</p>
+    <p>Chance of Rain: { `${ Math.round(hourly.precipProbability * 100) }%` }</p>
     <p>Humidity: { `${ Math.round(hourly.humidity * 100) }%` }</p>
     <p>Wind: <span className={ CSS.smallCaps }>{ convertToCardinal(hourly.windBearing).toLowerCase() }</span>{ ` ${hourly.windSpeed} mph` }</p>
     <p>Feels like: { `${hourly.apparentTemperature}℉` }</p>
