@@ -53,7 +53,12 @@ export const Heading = ({ hourly, timezone, city }) => {
   </div>
 }
 
-
+export const MinutelySection = ({ minutely }) => {
+  return <div className={ [CSS.line, CSS.column].join(' ') }>
+    <PrecipGraph data={ minutely ? minutely.data : [] }/>
+    <p className="summary">Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
+  </div>
+}
 
 export const ForecastDisplay = React.createClass({
   getInitialState() {
@@ -79,11 +84,7 @@ export const ForecastDisplay = React.createClass({
 
     return <section className={ [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ') }>
       <Heading city={ this.state.city } timezone={ timezone } hourly={ hourly }/>
-
-      <div className={ [CSS.line, CSS.column].join(' ') }>
-        <PrecipGraph data={ minutely ? minutely.data : [] }/>
-        <p className="summary">Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
-      </div>
+      <MinutelySection minutely={ minutely } />
 
 
       <div className={ [CSS.line, CSS.column, CSS.details].join(' ') }>
