@@ -1,22 +1,41 @@
-import fetch from 'fetch-jsonp'
+import AWS from 'aws-sdk'
 
 export const getWeatherIcon = name => {
   const req = require.context('babel!svg-react!./weather-icons', true)
   return req(`./${name}.svg`)
 }
 
-/*
-*  You can use a standard fetch outside of a CORS protected environment
-*  but I'm passing a fetch implementation in here for isomorphic use
-*  This should be updated to hit lambda either way instead
-*/
-const defaultParams = {location: { lat: 45.5238681, lng: -122.66014759999999 }}
-export const fetchForecast = (props=defaultParams)  => {
-  const {lat, lng} = props.location
-  const APIKey = '8f728d0cd9f64ce4bfd3186bab1bfb1d'
-  const requestURL = `https://api.forecast.io/forecast/${ APIKey }/${ lat },${ lng }`
-  return fetch(requestURL)
-    .then(response => response.json())
+// LAMBDA STUFF FOR HIDING FORECAST API KEY
+const Lambda = new AWS.Lambda({
+  region: 'us-east-1',
+  accessKeyId: 'AKIAJMIVROLTFJRCFCQQ',
+  secretAccessKey: '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'
+})
+
+export const lambdaPromise = params => {
+  return new Promise((resolve, reject) => {
+    const lambdaCallback = (error, results) => {
+      if (error) reject(error)
+      resolve(results.Payload)
+    }
+
+    Lambda.invoke(params, lambdaCallback)
+  })
+}
+
+export const invokeLambdaFetch = payload => {
+  let json
+  try { json = JSON.stringify(payload)}
+  catch(error) { throw new Error('The payload you gave me cant be serialized for lambda use...I need something I can JSON.stringify')}
+  return lambdaPromise({
+    FunctionName: 'weather-map-API',
+    Payload: json
+  })
+}
+
+export const fetchForecast = (location={lat: 45.5238681, lng: -122.66014759999999})  => {
+  return invokeLambdaFetch(location)
+    .then(response => JSON.parse(response))
     .then(results => {
       return {
         timezone: results.timezone,

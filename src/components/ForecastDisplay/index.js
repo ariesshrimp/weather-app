@@ -38,9 +38,10 @@ const emptyDefault = {
 *   are missing on the response
 */
 export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) => {
-  return fetchForecast({location, city}).then(results => {
-    return Object.assign({}, emptyDefault, results, { city })
-  })
+  return fetchForecast(location)
+    .then(results => {
+      return Object.assign({}, emptyDefault, results, { city })
+    })
 }
 
 export const Heading = ({ hourly, timezone, city }) => {
