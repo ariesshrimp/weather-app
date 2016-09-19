@@ -1,11 +1,15 @@
 import AWS from 'aws-sdk'
 
 export const getWeatherIcon = name => {
-  const req = require.context('babel!svg-react!./weather-icons', true)
-  return req(`./${name}.svg`)
+  // const req = require.context('babel!svg-react!./weather-icons', true)
+  // return req(`./${ name }.svg`)
+  return require(`babel!svg-react!./weather-icons/${ name }.svg`)
 }
 
-// LAMBDA STUFF FOR HIDING FORECAST API KEY
+/** LAMBDA STUFF FOR HIDING FORECAST API KEY
+*   It doesn't matter who sees this because the Lambda function is configured
+*   by an IAM user with permissions only for this lambda function
+ */
 const Lambda = new AWS.Lambda({
   region: 'us-east-1',
   accessKeyId: 'AKIAJMIVROLTFJRCFCQQ',
@@ -24,9 +28,7 @@ export const lambdaPromise = params => {
 }
 
 export const invokeLambdaFetch = payload => {
-  let json
-  try { json = JSON.stringify(payload)}
-  catch(error) { throw new Error('The payload you gave me cant be serialized for lambda use...I need something I can JSON.stringify')}
+  const json = JSON.stringify(payload)
   return lambdaPromise({
     FunctionName: 'weather-map-API',
     Payload: json
@@ -43,15 +45,17 @@ export const fetchForecast = (location={lat: 45.5238681, lng: -122.6601475999999
         minutely: results.minutely || {summary: 'No up-to-the-minute data available', data: []}
       }
     })
+    .catch(error => {
+      throw error
+    })
 }
 
 // See
 // http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
 // for details about this mapping
 export const convertToCardinal = degrees => {
-  if (degrees > 360 || degrees < 0) throw new Error('currently does not convert degrees outside 0-360')
   switch (true) {
-    case ((degrees <= 11.25) || (degrees >= 348.75)):
+    case ((degrees <= 11.25 && degrees >= 0) || (degrees >= 348.75 && degrees <= 360)):
       return 'N'
       break
     case ((degrees > 11.25) && (degrees <= 33.75)):
@@ -100,6 +104,6 @@ export const convertToCardinal = degrees => {
       return 'NNW'
       break
     default:
-      return ''
+      throw new Error('currently does not convert degrees outside 0-360')
   }
 }

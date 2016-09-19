@@ -35,7 +35,7 @@ describe('Utilities', function()  {
       expect(actual).to.equal(expected)
     })
 
-    it('should be correctly bail at the beginning', function()  {
+    it('should correctly bail at the beginning', function()  {
       const actual = convertToCardinal(0)
       const expected = 'N'
       expect(actual).to.equal(expected)

@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for utilities.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> utilities.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">68.42% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>39/57</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">96.55% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>56/58</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">69.09% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>38/55</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">362x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import AWS from 'aws-sdk'
+&nbsp;
+export const getWeatherIcon = <span class="fstat-no" title="function not covered" >na</span>me =&gt; {
+  // const req = require.context('babel!svg-react!./weather-icons', true)
+  // return req(`./${ name }.svg`)
+<span class="cstat-no" title="statement not covered" >  return require(`babel!svg-react!./weather-icons/${ name }.svg`)</span>
+&nbsp;
+}
+&nbsp;
+/** LAMBDA STUFF FOR HIDING FORECAST API KEY
+*   It doesn't matter who sees this because the Lambda function is configured
+*   by an IAM user with permissions only for this lambda function
+ */
+const Lambda = new AWS.Lambda({
+  region: 'us-east-1',
+  accessKeyId: 'AKIAJMIVROLTFJRCFCQQ',
+  secretAccessKey: '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'
+})
+&nbsp;
+export const lambdaPromise = params =&gt; {
+  return new Promise((resolve, reject) =&gt; {
+    const lambdaCallback = (error, results) =&gt; {
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >reject(error)</span>
+      resolve(results.Payload)
+    }
+&nbsp;
+    Lambda.invoke(params, lambdaCallback)
+  })
+}
+&nbsp;
+export const invokeLambdaFetch = payload =&gt; {
+  let json
+  try {
+    json = JSON.stringify(payload)
+    if (json === undefined) throw new Error()
+  }
+  catch(error) { throw new Error('The payload you gave me cant be serialized for lambda use...I need something I can JSON.stringify')}
+  return lambdaPromise({
+    FunctionName: 'weather-map-API',
+    Payload: json
+  })
+}
+&nbsp;
+export const fetchForecast = (location={lat: 45.5238681, lng: -122.66014759999999})  =&gt; {
+  return invokeLambdaFetch(location)
+    .then(response =&gt; JSON.parse(response))
+    .then(results =&gt; {
+      return {
+        timezone: results.timezone,
+        hourly: results.hourly.data[0],
+        minutely: results.minutely || <span class="branch-1 cbranch-no" title="branch not covered" >{summary: 'No up-to-the-minute data available', data: []}</span>
+      }
+    })
+    .catch(error =&gt; {
+      throw error
+    })
+}
+&nbsp;
+// See
+// http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm
+// for details about this mapping
+export const convertToCardinal = degrees =&gt; {
+  switch (true) {
+    case ((degrees &lt;= 11.25 &amp;&amp; degrees &gt;= 0) || (degrees &gt;= 348.75 &amp;&amp; degrees &lt;= 360)):
+      return 'N'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 11.25) &amp;&amp; (degrees &lt;= 33.75)):
+      return 'NNE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 33.75) &amp;&amp; (degrees &lt;= 56.25)):
+      return 'NE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 56.25) &amp;&amp; (degrees &lt;= 78.75)):
+      return 'ENE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 78.75) &amp;&amp; (degrees &lt;= 101.25)):
+      return 'E'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 101.25) &amp;&amp; (degrees &lt;= 123.75)):
+      return 'ESE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 123.75) &amp;&amp; (degrees &lt;= 146.26)):
+      return 'SE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 146.26) &amp;&amp; (degrees &lt;= 168.75)):
+      return 'SSE'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 168.75) &amp;&amp; (degrees &lt;= 191.25)):
+      return 'S'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 191.25) &amp;&amp; (degrees &lt;= 213.75)):
+      return 'SSW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 213.75) &amp;&amp; (degrees &lt;= 236.25)):
+      return 'SW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 236.25) &amp;&amp; (degrees &lt;= 258.75)):
+      return 'WSW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 258.75) &amp;&amp; (degrees &lt;= 281.25)):
+      return 'W'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 281.25) &amp;&amp; (degrees &lt;= 303.75)):
+      return 'WNW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 303.75) &amp;&amp; (degrees &lt;= 326.25)):
+      return 'NW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    case ((degrees &gt; 326.25) &amp;&amp; (degrees &lt; 348.75)):
+      return 'NNW'
+<span class="cstat-no" title="statement not covered" >      break</span>
+    default:
+      throw new Error('currently does not convert degrees outside 0-360')
+  }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 19 2016 10:04:01 GMT-0700 (PDT)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>
