@@ -3,6 +3,19 @@ const geocode = require('google-maps-api/geocode')
 
 import CSS from './styles.scss'
 
+export const getNewLocation = location => {
+  // Use the gmaps geocode API to interpret the user's input
+  return geocode({
+    address: location
+  }).then(coordinates => {
+    let {lat, lng} = coordinates[0].geometry.location
+    return {
+      location: {lat: lat(), lng: lng()},
+      city: coordinates[0].formatted_address.split(', ').slice(-3)[0]
+    }
+  })
+}
+
 export const LocationField = React.createClass({
   getInitialState() {
     return {place: ''}
@@ -30,7 +43,8 @@ export const LocationField = React.createClass({
       // Make sure that there actually is a place first...
       if (place) {
         this.setState({ place: place.formatted_address })
-        callback(place.formatted_address)
+        return getNewLocation(place.formatted_address)
+          .then(result => callback(result))
       }
     })
   },

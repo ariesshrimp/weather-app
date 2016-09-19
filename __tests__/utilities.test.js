@@ -1,5 +1,4 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
 import { gen, check, property, sample } from 'testcheck'
 
 import { fetchForecast, convertToCardinal } from '../src/components/ForecastDisplay/utilities.js'

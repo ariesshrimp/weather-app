@@ -46,74 +46,58 @@ export const Map = React.createClass({
   }
 })
 
+export const getCurrentLocation = () => {
+  const getLocationPromise = () => new Promise((resolve, reject) => {
+    return navigator.geolocation.getCurrentPosition(resolve)
+  })
+  let location
+  return getLocationPromise()
+    .then(position => {
+      // Renames the coordinate properties for GoogleMaps compatibility
+      location = { lat: position.coords.latitude, lng: position.coords.longitude }
+      return location
+    })
+    .then(location => geocode({ location }))
+    .then(place => place[0].formatted_address.split(', ').slice(-3)[0])
+    .then(cityName => ({ location, cityName }))
+}
+
+export const setLocation = (location, city) => {
+  localStorage.setItem('location', JSON.stringify(location))
+  localStorage.setItem('city', city)
+  return { location, city }
+}
+
+export const getStoredLocation = fallback => {
+  const location = localStorage.getItem('location') || fallback.location
+  const city = localStorage.getItem('city') || fallback.city
+  return { location: JSON.parse(location), city }
+}
+
 export const ControlledMap = React.createClass({
   // This doesn't seem right, but I'm not sure what to use as a default location.
   // Hard to choose something that isn't exclusionary, and all the sensible API's
   // are asynchronous, so it won't work here in getInitialState
   getInitialState() {
-    const userLocation = JSON.parse(localStorage.getItem('location') )
-    const userCity = localStorage.getItem('city')
+    const defaultLocation = {
+      location: {lat: -34.397, lng: 150.644},
+      city: 'Portland'
+    }
 
-    if (userLocation && userCity) {
-      return { location: userLocation, city: userCity }
-    }
-    else if (userLocation) {
-      return { location: userLocation, city: '' }
-    }
-    else {
-      return {
-        location: {lat: -34.397, lng: 150.644},
-        city: 'Portland'
-      }
-    }
+    if (!window.localStorage) return defaultLocation
+    else return getStoredLocation(defaultLocation)
   },
 
   componentDidMount() {
-    if (!this.state.location) {
-      // Ask the user if they want to use their current location
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude: lat, longitude: lng } = position.coords
-        const location = { lat, lng }
-        geocode({
-          location
-        }).then(place => {
-          // Arbitrary string manipulation from the gmaps API response
-          const city = place[0].formatted_address.split(', ').slice(-3)[0]
-          // Cache it for return visits
-          localStorage.setItem('location', JSON.stringify(location))
-          localStorage.setItem('city', city)
-
-          // Update the state
-          this.setState({
-            location,
-            city
-          })
-        })
-      })
-    }
-
-    // Don't make them wait around forever if we've cached it already
-    // just skip it.
-    else {
-      console.log('not fetching', this.state)
-      return false
+    if (!this.state.location && window.navigator) {
+      getCurrentLocation()
+        .then(location => setLocation(location))
+        .then(city => this.setState(location))
     }
   },
 
-  handleLocationUpdate(location) {
-    // Use the gmaps geocode API to interpret the user's input
-    const newLocation = geocode({
-      address: location
-    }).then(coordinates => {
-      let {lat, lng} = coordinates[0].geometry.location
-      let loc = {lat: lat(), lng: lng()}
-
-      // Update the state
-      this.setState({
-        location: loc,
-        city: coordinates[0].formatted_address.split(', ').slice(-3)[0]
-      })
-    })
+  handleLocationUpdate({ location, city }) {
+    this.setState({ location, city })
   },
 
   render() {

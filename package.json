@@ -68,7 +68,7 @@
     "report": "jest --coverage && live-server coverage/lcov-report"
   },
   "jest": {
-    "testRegex": "/__tests__/",
+    "testRegex": "/__tests__/Map.test.js",
     "moduleNameMapper": {
       "moduleFileExtensions": [
         "js"
