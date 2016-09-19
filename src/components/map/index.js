@@ -1,6 +1,6 @@
 import React from 'react'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
-// import { triggerEvent } from 'react-google-maps/lib/utils'
+import { triggerEvent } from 'react-google-maps/lib/utils'
 
 import { LocationField } from '../LocationSearch/index.js'
 import { ForecastDisplay } from '../ForecastDisplay/index.js'
