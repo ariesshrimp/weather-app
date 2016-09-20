@@ -1,5 +1,6 @@
-Build status: [![Travis](https://img.shields.io/travis/joefraley/weather-app.svg)]()
-Test coverage: [![Codecov](https://img.shields.io/codecov/c/github/joefraley/weather-app.svg)]()
+Build status: [![Travis](https://img.shields.io/travis/joefraley/weather-app.svg)](https://travis-ci.org/joefraley/weather-app)
+[![codecov](https://codecov.io/gh/joefraley/weather-app/branch/master/graph/badge.svg)](https://codecov.io/gh/joefraley/weather-app)
+
 
 Live results posted : https://weather-app-e3ca5.firebaseapp.com
 
