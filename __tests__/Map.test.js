@@ -2,10 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import TestUtils from 'react-addons-test-utils'
 
-import { Map, ControlledMap } from '../src/components/Map/index.js'
+const { Map, ControlledMap } = require('../src/components/Map/index.js')
 
 
-describe('<Map />', () => {
+xdescribe('<Map />', () => {
   // Not sure this should be tested any further since it's almost entirely vendor code
   it('should correctly set map center and marker position at props.location', () => {
     const renderer = TestUtils.createRenderer()

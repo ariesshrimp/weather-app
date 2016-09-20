@@ -4,7 +4,7 @@
 * structural to every single "page" of the site
 */
 import React from 'react'
-import { ControlledMap } from './Map/index.js'
+const { ControlledMap } = require('./Map/index.js')
 
 import CSS from './styles.scss'
 

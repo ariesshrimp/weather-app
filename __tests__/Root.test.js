@@ -7,7 +7,7 @@ const gmaps = require('google-maps-api')('AIzaSyDAA7ZvT8YQXSKoFNu9NwvlFeuS4M649Q
 import { Root } from '../src/components/root.js'
 
 
-describe('<Root />', () => {
+xdescribe('<Root />', () => {
   it('should render fine', () => {
     const renderer = TestUtils.createRenderer()
     const component = renderer.render(<Root />)
