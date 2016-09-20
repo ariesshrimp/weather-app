@@ -2,7 +2,7 @@ import React from 'react'
 import Moment from 'moment'
 import { LineChart } from 'react-d3'
 
-import CSS from './styles.scss'
+import CSS from '../styles.scss'
 
 export const PrecipitationGraph = props => {
   /**

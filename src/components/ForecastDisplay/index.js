@@ -40,6 +40,8 @@ const emptyDefault = {
 export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city='Portland'}) => {
   return fetchForecast(location)
     .then(results => {
+      results.minutely = Object.assign({}, emptyDefault.minutely, results.minutely)
+      results.hourly = Object.assign({}, emptyDefault.hourly, results.hourly)
       return Object.assign({}, emptyDefault, results, { city })
     })
 }
@@ -57,7 +59,7 @@ export const Heading = ({ hourly, timezone, city }) => {
 
 export const DetailsMinutely = ({ minutely }) => {
   return <div className={ [CSS.line, CSS.column].join(' ') }>
-    <PrecipGraph data={ minutely ? minutely.data : [] }/>
+    <PrecipitationGraph data={ minutely ? minutely.data : [] }/>
     <p className="summary">Current forecast: { minutely ? minutely.summary : 'Unknown' }</p>
   </div>
 }

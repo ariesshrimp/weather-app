@@ -61,15 +61,14 @@
     "webpack-node-externals": "^1.4.3"
   },
   "scripts": {
-    "test": "babel-node node_modules/.bin/webpack-dev-server --port 3000 --config test.webpack.config.js --quiet --hot --inline --content-base test/",
-    "build": "rm -rf public && babel-node node_modules/.bin/webpack",
+    "test": "jest",
+    "report": "jest --coverage",
     "dev": "babel-node node_modules/.bin/webpack-dev-server",
-    "deploy": "firebase deploy",
-    "jest": "jest",
-    "report": "jest --coverage && live-server coverage/lcov-report"
+    "build": "rm -rf public && babel-node node_modules/.bin/webpack",
+    "deploy": "firebase deploy"
   },
   "jest": {
-    "testRegex": "__tests__/",
+    "testRegex": "__tests__.+test.js$",
     "moduleNameMapper": {
       "moduleFileExtensions": [
         "js"
@@ -77,8 +76,8 @@
       "moduleDirectories": [
         "node_modules"
       ],
-      "^.+\\.(css|scss)$": "<rootDir>/styleMock.js",
-      "^.+\\.(svg)$": "<rootDir>/fileMock.js"
+      "^.+\\.(css|scss)$": "<rootDir>/__tests__/mocks/styleMock.js",
+      "^.+\\.(svg)$": "<rootDir>/__tests__/mocks/fileMock.js"
     }
   },
   "author": "Joe Fraley",
