@@ -2,7 +2,7 @@ import React from 'react'
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps'
 import { triggerEvent } from 'react-google-maps/lib/utils'
 
-import { LocationField } from '../LocationSearch/index.js'
+import { SearchBar } from '../LocationSearchBar/index.js'
 import { ForecastDisplay } from '../ForecastDisplay/index.js'
 
 const geocode = require('google-maps-api/geocode')
@@ -102,7 +102,7 @@ export const ControlledMap = React.createClass({
 
   render() {
     return <div className={ CSS.container }>
-      <LocationField onChange={ this.handleLocationUpdate } mapInstance={ this.props.mapInstance }/>
+      <SearchBar onChange={ this.handleLocationUpdate } mapInstance={ this.props.mapInstance }/>
       <ForecastDisplay location={ this.state.location } city={ this.state.city }/>
       <Map location={ this.state.location }/>
     </div>

@@ -4,12 +4,12 @@ import { LineChart } from 'react-d3'
 
 import CSS from './styles.scss'
 
-export const PrecipGraph = props => {
+export const PrecipitationGraph = props => {
   /**
   *   The forecast.io API doesn't have the same data available
   *   for every possible location... 😡🏻
   */
-  if (!props.data.length) return null
+  if (!props.data || !props.data.length) return null
 
   /**
   *   Reformat the data correctly for D3's preferences 💃🏻

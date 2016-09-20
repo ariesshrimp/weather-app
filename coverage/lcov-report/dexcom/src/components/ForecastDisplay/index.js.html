@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for dexcom/src/components/ForecastDisplay/index.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">All files</a> / <a href="index.html">dexcom/src/components/ForecastDisplay</a> index.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12.5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>1/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">14.29% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/20</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Moment from 'moment'
+import { tz } from 'moment-timezone'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import CSS from './styles.scss'
+import { PrecipitationGraph } from './MinuteDataView/index.js'
+import { convertToCardinal, fetchForecast, getWeatherIcon } from './utilities.js'
+&nbsp;
+/**
+*   Serves as a nice litle API doc for the forecast.io response 🤖🏻
+*/
+const emptyDefault = {
+  city: '',
+  timezone: '',
+  hourly: {
+    summary: '',
+    icon: 'default',
+    temperature: 0,
+    apparentTemperature: 0,
+    humidity: 0,
+    windSpeed: 0,
+    windBearing: 0,
+    precipProbability: 0,
+    precipIntensity: 0,
+    pressure: 0,
+    visibility: 0
+  },
+  minutely: {
+    summary: '',
+    data: []
+  }
+}
+&nbsp;
+/**
+*    A functional  wrapper around the forecast.io fetch from ./utilities
+*   It always defaults to Portland, arbitrarily
+*   It merges the result with default settings in case any fields
+*   are missing on the response
+*/
+export const updateForecast = <span class="fstat-no" title="function not covered" >({</span>location=<span class="branch-0 cbranch-no" title="branch not covered" >{ lat: 45.5238681, lng: -122.66014759999999 },</span> city=<span class="branch-0 cbranch-no" title="branch not covered" >'Portland'}</span>) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return fetchForecast(location)</span>
+    .then(<span class="fstat-no" title="function not covered" >re</span>sults =&gt; {
+<span class="cstat-no" title="statement not covered" >      return Object.assign({}, emptyDefault, results, { city })</span>
+    })
+}
+&nbsp;
+export const Heading = ({ hourly, timezone, city }) =&gt; {
+  const Icon = getWeatherIcon(hourly.icon)
+  return &lt;div className={ [CSS.heading, CSS.column].join(' ') }&gt;
+    &lt;h2 className={ CSS.city }&gt;{ city }&lt;/h2&gt;
+    &lt;p&gt;{ hourly.summary }&lt;/p&gt;
+    &lt;Icon className="icon"/&gt;
+    &lt;h1 className={ CSS.temp }&gt;{ `${ hourly.temperature }℉` }&lt;/h1&gt;
+    &lt;p&gt;{ timezone ? <span class="branch-0 cbranch-no" title="branch not covered" >tz(timezone).format('dddd h:mma') </span>: Moment().format('dddd h:mma') }&lt;/p&gt;
+  &lt;/div&gt;
+}
+&nbsp;
+export const DetailsMinutely = <span class="fstat-no" title="function not covered" >({</span> minutely }) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return &lt;div className={ [CSS.line, CSS.column].join(' ') }&gt;</span>
+    &lt;PrecipGraph data={ minutely ? minutely.data : [] }/&gt;
+    &lt;p className="summary"&gt;Current forecast: { minutely ? minutely.summary : 'Unknown' }&lt;/p&gt;
+  &lt;/div&gt;
+}
+&nbsp;
+export const DetailsHourly = <span class="fstat-no" title="function not covered" >({</span> hourly }) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return &lt;div className={ [CSS.line, CSS.column, CSS.details].join(' ') }&gt;</span>
+    &lt;p&gt;Chance of Rain: { `${ Math.round(hourly.precipProbability * 100) }%` }&lt;/p&gt;
+    &lt;p&gt;Humidity: { `${ Math.round(hourly.humidity * 100) }%` }&lt;/p&gt;
+    &lt;p&gt;Wind: &lt;span className={ CSS.smallCaps }&gt;{ convertToCardinal(hourly.windBearing).toLowerCase() }&lt;/span&gt;{ ` ${hourly.windSpeed} mph` }&lt;/p&gt;
+    &lt;p&gt;Feels like: { `${hourly.apparentTemperature}℉` }&lt;/p&gt;
+    &lt;p&gt;Precipitation: { `${ hourly.precipIntensity } in` }&lt;/p&gt;
+    &lt;p&gt;Pressure: { `${ hourly.pressure } mb` }&lt;/p&gt;
+    &lt;p&gt;Visibility: { `${ hourly.visibility } mi` }&lt;/p&gt;
+  &lt;/div&gt;
+}
+&nbsp;
+export const ForecastDisplay = React.createClass({
+  getInitialState() {
+<span class="cstat-no" title="statement not covered" >    return Object.assign({}, emptyDefault, {city: this.props.city})</span>
+  },
+&nbsp;
+  componentDidMount() {
+<span class="cstat-no" title="statement not covered" >    updateForecast({</span>
+      location: this.props.location,
+      city: this.props.city
+    }).then(<span class="fstat-no" title="function not covered" >re</span>sults =&gt; <span class="cstat-no" title="statement not covered" >this.setState(results))</span>
+  },
+&nbsp;
+  componentWillReceiveProps(newProps) {
+<span class="cstat-no" title="statement not covered" >    updateForecast({</span>
+      location: newProps.location,
+      city: newProps.city
+    }).then(<span class="fstat-no" title="function not covered" >re</span>sults =&gt; <span class="cstat-no" title="statement not covered" >this.setState(results))</span>
+  },
+&nbsp;
+  render() {
+    const { hourly, minutely, timezone } = <span class="cstat-no" title="statement not covered" >this.state</span>
+    const styles = <span class="cstat-no" title="statement not covered" >[CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ')</span>
+<span class="cstat-no" title="statement not covered" >    return &lt;section className={ styles }&gt;</span>
+      &lt;Heading city={ this.state.city } timezone={ timezone } hourly={ hourly } /&gt;
+      &lt;DetailsMinutely minutely={ minutely } /&gt;
+      &lt;DetailsHourly hourly={ hourly } /&gt;
+    &lt;/section&gt;
+  }
+})
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Sep 20 2016 00:46:56 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>

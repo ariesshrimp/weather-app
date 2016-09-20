@@ -28,8 +28,6 @@ describe('Utilities', function()  {
       expect(tooLow).toThrowError(errorMessage)
       expect(tooHigh).toThrowError(errorMessage)
     })
-
-
   })
 
   describe('fetchForecast', () => {

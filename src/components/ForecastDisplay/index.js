@@ -3,7 +3,7 @@ import { tz } from 'moment-timezone'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSS from './styles.scss'
-import { PrecipGraph } from './chart.js'
+import { PrecipitationGraph } from './MinuteDataView/index.js'
 import { convertToCardinal, fetchForecast, getWeatherIcon } from './utilities.js'
 
 /**
@@ -37,7 +37,7 @@ const emptyDefault = {
 *   It merges the result with default settings in case any fields
 *   are missing on the response
 */
-export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city}) => {
+export const updateForecast = ({location={ lat: 45.5238681, lng: -122.66014759999999 }, city='Portland'}) => {
   return fetchForecast(location)
     .then(results => {
       return Object.assign({}, emptyDefault, results, { city })
@@ -46,11 +46,10 @@ export const updateForecast = ({location={ lat: 45.5238681, lng: -122.6601475999
 
 export const Heading = ({ hourly, timezone, city }) => {
   const Icon = getWeatherIcon(hourly.icon)
-
   return <div className={ [CSS.heading, CSS.column].join(' ') }>
     <h2 className={ CSS.city }>{ city }</h2>
     <p>{ hourly.summary }</p>
-    <Icon />
+    <Icon className="icon"/>
     <h1 className={ CSS.temp }>{ `${ hourly.temperature }℉` }</h1>
     <p>{ timezone ? tz(timezone).format('dddd h:mma') : Moment().format('dddd h:mma') }</p>
   </div>
@@ -98,9 +97,9 @@ export const ForecastDisplay = React.createClass({
     const { hourly, minutely, timezone } = this.state
     const styles = [CSS.column, CSS[hourly.icon], CSS.animated, CSS.material].join(' ')
     return <section className={ styles }>
-      <Heading city={ this.state.city } timezone={ timezone } hourly={ hourly }/>
+      <Heading city={ this.state.city } timezone={ timezone } hourly={ hourly } />
       <DetailsMinutely minutely={ minutely } />
-      <DetailsHourly hourly={ hourly }/>
+      <DetailsHourly hourly={ hourly } />
     </section>
   }
 })
