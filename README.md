@@ -5,6 +5,8 @@ Build status: [![Travis](https://img.shields.io/travis/joefraley/weather-app.svg
 Live results posted : https://weather-app-e3ca5.firebaseapp.com
 
 #Front-End Development Coding Challenge
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/joefraley/weather-app.svg)](https://greenkeeper.io/)
 Use your favorite JS frameworks to develop a simple single-page application that:
 
 1. ✅ Allows a user to type a location into an input field
